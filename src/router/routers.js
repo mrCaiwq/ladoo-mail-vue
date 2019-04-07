@@ -99,6 +99,35 @@ export default [
     ]
   },
   {
+    path: '/send_mail',
+    name: 'send_mail',
+    meta: {
+      icon: 'logo-buffer',
+      title: '群发邮件'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'temp_send_mail',
+        name: 'temp_send_mail_page',
+        meta: {
+          icon: 'md-arrow-dropdown-circle',
+          title: '临时群发'
+        },
+        component: () => import('@/view/send_mail/temp_send/editor.vue')
+      },
+      {
+        path: 'subscription',
+        name: 'mail_subscription_page',
+        meta: {
+          icon: 'md-arrow-dropdown-circle',
+          title: '订阅管理'
+        },
+        component: () => import('@/view/send_mail/subscription/editor.vue')
+      }
+    ]
+  },
+  {
     path: '/components',
     name: 'components',
     meta: {

@@ -1,7 +1,7 @@
-import axios from "axios";
-import store from "@/store";
-import { getToken } from "@/libs/util";
-import { Message } from "iview";
+import axios from 'axios'
+import store from '@/store'
+import { getToken } from '@/libs/util'
+import { Message } from 'iview'
 
 // import { Spin } from 'iview'
 const addErrorLog = errorInfo => {
@@ -9,38 +9,37 @@ const addErrorLog = errorInfo => {
     statusText,
     status,
     request: { responseURL }
-  } = errorInfo;
+  } = errorInfo
   let info = {
-    type: "ajax",
+    type: 'ajax',
     code: status,
     mes: statusText,
     url: responseURL
-  };
-  if (!responseURL.includes("save_error_logger"))
-    store.dispatch("addErrorLog", info);
-};
+  }
+  if (!responseURL.includes('save_error_logger')) { store.dispatch('addErrorLog', info) }
+}
 
 class HttpRequest {
-  constructor(baseUrl = baseURL) {
-    this.baseUrl = baseUrl;
-    this.queue = {};
+  constructor (baseUrl = baseURL) {
+    this.baseUrl = baseUrl
+    this.queue = {}
   }
-  getInsideConfig() {
+  getInsideConfig () {
     const config = {
       baseURL: this.baseUrl,
       headers: {
         //
       }
-    };
-    return config;
+    }
+    return config
   }
-  destroy(url) {
-    delete this.queue[url];
+  destroy (url) {
+    delete this.queue[url]
     if (!Object.keys(this.queue).length) {
       // Spin.hide()
     }
   }
-  interceptors(instance, url) {
+  interceptors (instance, url) {
     // 请求拦截
     instance.interceptors.request.use(
       config => {
@@ -48,57 +47,54 @@ class HttpRequest {
         if (!Object.keys(this.queue).length) {
           // Spin.show() // 不建议开启，因为界面不友好
         }
-        const token = getToken();
-        console.log("api set token:" + token);
-        config.headers.Authorization = token;
+        const token = getToken()
+        config.headers.Authorization = token
 
-        this.queue[url] = true;
-        return config;
+        this.queue[url] = true
+        return config
       },
       error => {
-        return Promise.reject(error);
+        return Promise.reject(error)
       }
-    );
+    )
     // 响应拦截
     instance.interceptors.response.use(
       res => {
-        console.log("%c 接口请求", "color: #4CAF50; font-weight: bold", res);
-        this.destroy(url);
-        const { data, status } = res;
-        if (res.data && (res.data.code > 400 || res.data.meta.code != 0)) {
-          Message.error(res.data.meta.msg);
+        console.log('%c 接口请求', 'color: #4CAF50; font-weight: bold', res)
+        this.destroy(url)
+        const { data, status } = res
+        if (res.data && (res.data.code > 400 || res.data.meta.code !== 0)) {
+          Message.error(res.data.meta.msg)
 
-          return Promise.reject({
-            ...res.data.meta
-          });
+          return Promise.reject(new Error(res.data.meta))
         }
-        return { data, status };
+        return { data, status }
       },
       error => {
-        console.log("api resquest fail:", error);
-        this.destroy(url);
-        let errorInfo = error.response;
+        console.log('api resquest fail:', error)
+        this.destroy(url)
+        let errorInfo = error.response
         if (!errorInfo) {
           const {
             request: { statusText, status },
             config
-          } = JSON.parse(JSON.stringify(error));
+          } = JSON.parse(JSON.stringify(error))
           errorInfo = {
             statusText,
             status,
             request: { responseURL: config.url }
-          };
+          }
         }
-        addErrorLog(errorInfo);
-        return Promise.reject(error);
+        addErrorLog(errorInfo)
+        return Promise.reject(error)
       }
-    );
+    )
   }
-  request(options) {
-    const instance = axios.create();
-    options = Object.assign(this.getInsideConfig(), options);
-    this.interceptors(instance, options.url);
-    return instance(options);
+  request (options) {
+    const instance = axios.create()
+    options = Object.assign(this.getInsideConfig(), options)
+    this.interceptors(instance, options.url)
+    return instance(options)
   }
 }
-export default HttpRequest;
+export default HttpRequest
