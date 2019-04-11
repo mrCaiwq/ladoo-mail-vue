@@ -1,13 +1,14 @@
 <template>
   <div>
-    <Form :model="formItem" :label-width="80">
-      <FormItem label="收件人">
+    <Form ref="emailForm" :model="formItem" :rules="rules" :label-width="80">
+      <FormItem label="收件人" prop="recipients">
         <vue-tags-input
           id="email-input"
           v-model="tag"
           :tags="recipientTags"
+          :validation="recipientValidation"
           placeholder="请输入收件人邮箱"
-          @tags-changed="newTags => recipientTags = newTags"
+          @tags-changed="handleTagChange"
         />
       </FormItem>
       <FormItem>
@@ -15,13 +16,13 @@
           <Button icon="ios-cloud-upload-outline">上传</Button>
         </Upload>
       </FormItem>
-      <FormItem label="发件人">
+      <FormItem label="发件人" prop="sender">
         <Input v-model="formItem.sender" placeholder="请输入发件人邮箱"/>
       </FormItem>
-      <FormItem label="标题">
+      <FormItem label="标题" prop="subject">
         <Input v-model="formItem.subject" placeholder="请输入标题"/>
       </FormItem>
-      <FormItem label>
+      <FormItem prop="content">
         <editor ref="editor" :value="formItem.content" @on-change="handleChange"/>
       </FormItem>
       <FormItem>
@@ -47,23 +48,52 @@ export default {
   data () {
     return {
       formItem: {
-        recipients: '',
+        recipients: null,
         sender: '',
         content: '',
         subject: ''
       },
       tag: '',
-      recipientTags: []
+      recipientTags: [],
+      rules: {
+        sender: [
+          { required: true, message: '发件人不能为空', trigger: 'change' },
+          { type: 'email', message: '邮件格式不正确', trigger: 'change' }
+        ],
+        subject: { required: true, message: '标题不能为空', trigger: 'change' },
+        content: { required: true, message: '内容不能为空', trigger: 'change' },
+        recipients: { type: 'array', required: true, min: 1, message: '收件人不能为空', trigger: 'change' }
+      },
+      recipientValidation: [
+        {
+          classes: 'invalid-email',
+          rule: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+        }
+      ]
     }
   },
   methods: {
+    handleTagChange (newTags) {
+      this.recipientTags = newTags
+      this.formItem.recipients = newTags.map(tag => tag.text)
+    },
+
     handleChange (html, text) {
-      console.log(html, text)
+      this.formItem.content = text ? html : null
     },
 
     handleSubmit () {
-      const { content, subject, sender } = this.formItem
-      const recipients = this.recipientTags.map(tag => tag.text)
+      this.$refs['emailForm'].validate((valid) => {
+        if (!valid) {
+          this.$Message.error('请正确地填写邮件')
+        } else {
+          this.createEmail()
+        }
+      })
+    },
+
+    createEmail () {
+      const { recipients, content, subject, sender } = this.formItem
       this.$Loading.start()
 
       batchCreate({
@@ -71,15 +101,17 @@ export default {
         sender,
         content,
         subject
-      }).then(res => {
-        const data = res.data.data
-        if (!data.success) {
-          // 为什么 key 是 table
-          const message = data.errors[0].table.message
-          return this.$Message.error(message)
-        }
-        this.$Message.success('成功发送邮件')
-      }).catch(() => this.$Message.error('请求失败'))
+      })
+        .then(res => {
+          const data = res.data.data
+          if (!data.success) {
+            // 为什么 key 是 table
+            const message = data.errors[0].table.message
+            return this.$Message.error(message)
+          }
+          this.$Message.success('成功发送邮件')
+        })
+        .catch(() => this.$Message.error('请求失败'))
         .finally(() => this.$Loading.finish())
     },
 
