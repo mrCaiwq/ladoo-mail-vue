@@ -46,15 +46,26 @@ export default {
     VueTagsInput
   },
   data () {
+    let recipient = 'admin@qq.com'
     return {
       formItem: {
-        recipients: null,
-        sender: '',
-        content: '',
-        subject: ''
+        recipients: [recipient],
+        sender: 'admin@qq.com',
+        content: `In working with other << INSERT INDUSTRY OR POSITION >>, one of the key issues they’re struggling with is << INSERT KEY ISSUE >>.
+
+This past year we helped numerous companies to << INSERT BUSINESS DRIVER >>, resulting << MONEY SAVED, REVENUE ADDED, PRODUCTIVITY INCREASES >>.
+
+If this is something you’re challenged with too, let’s set up a quick call. I have some ideas that might help.
+
+All the best,
+{CONTACT.OWNER_NAME}`,
+        subject: 'Cold Prospecting Email Templates'
       },
       tag: '',
-      recipientTags: [],
+      recipientTags:
+        [
+          { text: recipient }
+        ],
       rules: {
         sender: [
           { required: true, message: '发件人不能为空', trigger: 'change' },
