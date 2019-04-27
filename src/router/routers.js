@@ -86,7 +86,7 @@ export default [
           icon: 'md-arrow-dropdown-circle',
           title: '群发'
         },
-        component: () => import('@/view/send_mail/temp_send/editor.vue')
+        component: () => import('@/view/send_mail/temp_send/create_mail.vue')
       },
       {
         path: 'mails',

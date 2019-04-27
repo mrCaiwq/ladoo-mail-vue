@@ -20,7 +20,7 @@
         <Input v-model="formItem.subject" placeholder="请输入标题"/>
       </FormItem>
       <FormItem prop="content">
-        <editor ref="editor" :htmlContent.sync="formItem.content"/>
+        <editor ref="editor" v-model="formItem.content"/>
       </FormItem>
       <FormItem>
         <Button type="primary" @click="handleSubmit">提交</Button>
@@ -64,9 +64,9 @@ All the best,
           { type: 'email', message: '邮件格式不正确', trigger: 'blur' }
         ],
         subject: { required: true, message: '标题不能为空', trigger: 'blur' },
-        content: { required: true, message: '内容不能为空', trigger: 'change' },
-        recipients: { type: 'array', required: true, min: 1, message: '收件人不能为空', trigger: 'change' }
-      },
+        recipients: { type: 'array', required: true, min: 1, message: '收件人不能为空', trigger: 'change' },
+        content: { required: true, message: '内容不能为空', trigger: 'blur' }
+      }
     }
   },
   methods: {
