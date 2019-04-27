@@ -39,8 +39,8 @@ export default {
   data () {
     return {
       form: {
-        userName: '',
-        password: ''
+        userName: 'donaldding@163.com',
+        password: '123456'
       }
     }
   },

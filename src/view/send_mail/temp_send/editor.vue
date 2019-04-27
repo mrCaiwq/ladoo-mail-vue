@@ -94,8 +94,6 @@ export default {
 
     createEmail () {
       const { recipients, content, subject, sender } = this.formItem
-      this.$Loading.start()
-
       batchCreate({
         recipients,
         sender,
@@ -112,7 +110,6 @@ export default {
           this.$Message.success('成功发送邮件')
         })
         .catch(() => this.$Message.error('请求失败'))
-        .finally(() => this.$Loading.finish())
     },
 
     beforeUpload (file) {

@@ -142,7 +142,7 @@ export default {
       'setHomeRoute',
       'closeTag'
     ]),
-    ...mapActions(['handleLogin', 'getUnreadMessageCount']),
+    ...mapActions(['handleLogin']),
     turnToPage (route) {
       let { name, params, query } = {}
       if (typeof route === 'string') name = route
@@ -211,8 +211,6 @@ export default {
         name: this.$config.homeName
       })
     }
-    // 获取未读消息条数
-    this.getUnreadMessageCount()
   }
 }
 </script>
