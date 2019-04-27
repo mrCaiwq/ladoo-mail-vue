@@ -15,3 +15,21 @@ export const batchCreate = ({ recipients, sender, subject, content }) => {
     method: 'post'
   })
 }
+
+/**
+ *
+ * @param {number} page
+ */
+export const getEmailList = ({ page = 1, per_page = null }) => {
+  let params = {
+    page
+  }
+  if (per_page) {
+    params.per_page = per_page
+  }
+  return axios.request({
+    url: 'emails',
+    params: params,
+    method: 'get'
+  })
+}

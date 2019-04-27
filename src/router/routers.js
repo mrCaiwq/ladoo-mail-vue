@@ -94,7 +94,8 @@ export default [
         meta: {
           icon: 'md-arrow-dropdown-circle',
           title: '查看邮件'
-        }
+        },
+        component: () => import('@/view/send_mail/mail_list.vue')
       }
       // {
       //   path: 'subscription',

@@ -101,15 +101,8 @@ export default {
         subject
       })
         .then(res => {
-          const data = res.data.data
-          if (!data.success) {
-            // 为什么 key 是 table
-            const message = data.errors[0].table.message
-            return this.$Message.error(message)
-          }
           this.$Message.success('成功发送邮件')
         })
-        .catch(() => this.$Message.error('请求失败'))
     },
 
     beforeUpload (file) {
