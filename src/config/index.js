@@ -18,7 +18,7 @@ export default {
    */
   baseUrl: {
     dev: 'http://47.88.12.142:9090/api',
-    pro: 'https://produce.com'
+    pro: 'http://47.88.12.142:9090/api'
   },
   /**
    * @description 默认打开的首页的路由name值，默认为home
