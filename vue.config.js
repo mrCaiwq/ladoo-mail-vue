@@ -34,6 +34,10 @@ module.exports = {
       .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
       .set('_c', resolve('src/components'))
       .set('@c', resolve('src/components'))
+
+    // 在每个 .vue 文件加入全局样式文件，以访问 css 变量
+    const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
+    types.forEach(type => addStyleResource(config.module.rule('less').oneOf(type)))
   },
   // 设为false打包时不生成.map文件
   productionSourceMap: false
@@ -41,4 +45,14 @@ module.exports = {
   // devServer: {
   //   proxy: 'localhost:3000'
   // }
+}
+
+function addStyleResource (rule) {
+  rule.use('style-resource')
+    .loader('style-resources-loader')
+    .options({
+      patterns: [
+        path.resolve(__dirname, './src/global.less')
+      ]
+    })
 }
