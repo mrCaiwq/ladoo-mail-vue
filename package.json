@@ -8,11 +8,11 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "push": "./deploy.sh",
+    "deploy": "npm run build && npm run push",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
-    "@johmun/vue-tags-input": "^2.0.1",
     "axios": "^0.18.0",
     "clipboard": "^2.0.0",
     "codemirror": "^5.38.0",
@@ -30,6 +30,7 @@
     "v-org-tree": "^1.0.6",
     "vue": "^2.5.10",
     "vue-i18n": "^7.8.0",
+    "vue-input-tag": "^2.0.5",
     "vue-router": "^3.0.1",
     "vuedraggable": "^2.16.0",
     "vuex": "^3.0.1",

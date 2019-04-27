@@ -2,14 +2,11 @@
   <div>
     <Form ref="emailForm" :model="formItem" :rules="rules" :label-width="80">
       <FormItem label="收件人" prop="recipients">
-        <vue-tags-input
-          id="email-input"
-          v-model="tag"
-          :tags="recipientTags"
-          :validation="recipientValidation"
+        <input-tag
+          v-model="formItem.recipients"
+          :allow-duplicates="true"
           placeholder="请输入收件人邮箱"
-          @tags-changed="handleTagChange"
-        />
+          />
       </FormItem>
       <FormItem>
         <Upload action="" :before-upload="beforeUpload">
@@ -23,27 +20,27 @@
         <Input v-model="formItem.subject" placeholder="请输入标题"/>
       </FormItem>
       <FormItem prop="content">
-        <editor ref="editor" :value="formItem.content" @on-change="handleChange"/>
+        <editor ref="editor" :htmlContent.sync="formItem.content"/>
       </FormItem>
       <FormItem>
-        <Button type="primary" @click="handleSubmit">Submit</Button>
-        <Button @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
+        <Button type="primary" @click="handleSubmit">提交</Button>
+        <Button @click="handleReset('formValidate')" style="margin-left: 8px">清空</Button>
       </FormItem>
     </Form>
   </div>
 </template>
 
 <script>
-import Editor from '_c/editor'
+import Editor from '@c/editor'
 import { batchCreate } from '@/api/email'
 import { getArrayFromFile, getTableDataFromArray } from '@/libs/util'
-import VueTagsInput from '@johmun/vue-tags-input'
+import InputTag from 'vue-input-tag'
 
 export default {
   name: 'editor_page',
   components: {
     Editor,
-    VueTagsInput
+    InputTag
   },
   data () {
     let recipient = 'admin@qq.com'
@@ -61,38 +58,18 @@ All the best,
 {CONTACT.OWNER_NAME}`,
         subject: 'Cold Prospecting Email Templates'
       },
-      tag: '',
-      recipientTags:
-        [
-          { text: recipient }
-        ],
       rules: {
         sender: [
-          { required: true, message: '发件人不能为空', trigger: 'change' },
-          { type: 'email', message: '邮件格式不正确', trigger: 'change' }
+          { required: true, message: '发件人不能为空', trigger: 'blur' },
+          { type: 'email', message: '邮件格式不正确', trigger: 'blur' }
         ],
-        subject: { required: true, message: '标题不能为空', trigger: 'change' },
+        subject: { required: true, message: '标题不能为空', trigger: 'blur' },
         content: { required: true, message: '内容不能为空', trigger: 'change' },
         recipients: { type: 'array', required: true, min: 1, message: '收件人不能为空', trigger: 'change' }
       },
-      recipientValidation: [
-        {
-          classes: 'invalid-email',
-          rule: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-        }
-      ]
     }
   },
   methods: {
-    handleTagChange (newTags) {
-      this.recipientTags = newTags
-      this.formItem.recipients = newTags.map(tag => tag.text)
-    },
-
-    handleChange (html, text) {
-      this.formItem.content = text ? html : null
-    },
-
     handleSubmit () {
       this.$refs['emailForm'].validate((valid) => {
         if (!valid) {
@@ -129,6 +106,15 @@ All the best,
           this.$Notice.warning('只能上传Csv文件')
         })
       return false
+    },
+
+    handleReset () {
+      this.formItem = {
+        recipients: [],
+        sender: '',
+        content: '',
+        subject: ''
+      }
     }
   }
 }
