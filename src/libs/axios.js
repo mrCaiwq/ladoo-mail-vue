@@ -1,9 +1,8 @@
 import axios from 'axios'
 import store from '@/store'
 import { getToken } from '@/libs/util'
-import { Message } from 'iview'
+import { LoadingBar, Message } from 'iview'
 
-// import { Spin } from 'iview'
 const addErrorLog = errorInfo => {
   const {
     statusText,
@@ -46,6 +45,7 @@ class HttpRequest {
         // 添加全局的loading...
         if (!Object.keys(this.queue).length) {
           // Spin.show() // 不建议开启，因为界面不友好
+          LoadingBar.start()
         }
         const token = getToken()
         config.headers.Authorization = token
@@ -65,12 +65,15 @@ class HttpRequest {
         const { data, status } = res
         if (res.data && (res.data.code > 400 || res.data.meta.code !== 0)) {
           Message.error(res.data.meta.msg)
-
+          LoadingBar.error()
           return Promise.reject(new Error(res.data.meta))
         }
+        LoadingBar.finish()
         return { data, status }
       },
       error => {
+        LoadingBar.error()
+        Message.error('请求失败')
         console.log('api resquest fail:', error)
         this.destroy(url)
         let errorInfo = error.response

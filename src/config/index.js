@@ -2,7 +2,7 @@ export default {
   /**
    * @description 配置显示在浏览器标签的title
    */
-  title: 'iView-admin',
+  title: '邮件系统',
   /**
    * @description token在Cookie中存储的天数，默认1天
    */
@@ -17,7 +17,7 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    dev: 'http://127.0.0.1:3000/api',
+    dev: 'http://47.88.12.142:9090/api',
     pro: 'https://produce.com'
   },
   /**
