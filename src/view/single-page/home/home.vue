@@ -15,21 +15,29 @@
         </infor-card>
       </i-col>
     </Row>
-    <Row :gutter="20" style="margin-top: 10px;">
-      <i-col :md="24" :lg="8" style="margin-bottom: 20px;">
-        <Card shadow>
-          <chart-pie style="height: 300px;" :value="pieData" text="用户访问来源"></chart-pie>
-        </Card>
-      </i-col>
-      <i-col :md="24" :lg="16" style="margin-bottom: 20px;">
-        <Card shadow>
-          <chart-bar style="height: 300px;" :value="barData" text="每周用户活跃量"/>
-        </Card>
-      </i-col>
-    </Row>
+    <br>
     <Row>
+      <h1>每小时邮件统计</h1>
       <Card shadow>
-        <example style="height: 310px;"/>
+        <example :categories="hour.categories" :series="hour.series" style="height: 400px;"/>
+      </Card>
+    </Row>
+     <Row>
+      <h1>每天邮件统计</h1>
+      <Card shadow>
+        <example :categories="day.categories" :series="day.series" style="height: 400px;"/>
+      </Card>
+    </Row>
+     <Row>
+      <h1>每周邮件统计</h1>
+      <Card shadow>
+        <example :categories="week.categories" :series="week.series" style="height: 400px;"/>
+      </Card>
+    </Row>
+     <Row>
+      <h1>每月邮件统计</h1>
+      <Card shadow>
+        <example :categories="month.categories" :series="month.series" style="height: 400px;"/>
       </Card>
     </Row>
   </div>
@@ -40,7 +48,7 @@ import InforCard from '@c/info-card'
 import CountTo from '@c/count-to'
 import { ChartPie, ChartBar } from '@c/charts'
 import Example from './example.vue'
-import { getMailCount } from '@/api/statistic'
+import { getMailCount, getMailGroup } from '@/api/statistic'
 
 export default {
   name: 'home',
@@ -74,6 +82,22 @@ export default {
         Fri: 24643,
         Sat: 1322,
         Sun: 1324
+      },
+      hour: {
+        series: [],
+        categories: []
+      },
+      day: {
+        series: [],
+        categories: []
+      },
+      week: {
+        series: [],
+        categories: []
+      },
+      month: {
+        series: [],
+        categories: []
       }
     }
   },
@@ -111,18 +135,48 @@ export default {
 
   beforeMount () {
     this.fetchMailCountStat()
+    this.fetchMailGroupStat({ period: 'hour', begin_at: '2019-04-15', end_at: '2019-04-30' })
+    this.fetchMailGroupStat({ period: 'day', begin_at: '2019-04-01', end_at: '2019-04-30' })
+    this.fetchMailGroupStat({ period: 'week', begin_at: '2019-04-15', end_at: '2019-04-30' })
+    this.fetchMailGroupStat({ period: 'month', begin_at: '2019-03-01', end_at: '2019-05-01' })
   },
 
   methods: {
     fetchMailCountStat () {
       getMailCount().then(res => {
-        this.mailCountStat = Object.assign({}, {
-          mailCountToday: res.data.data.mail_count_today,
-          mailCountYesterday: res.data.data.mail_count_yesterday,
-          mailCountIn7days: res.data.data.mail_count_in_7days,
-          mailCountIn30days: res.data.data.mail_count_in_30days
-        })
+        this.mailCountStat = Object.assign({},
+          {
+            mailCountToday: res.data.data.mail_count_today,
+            mailCountYesterday: res.data.data.mail_count_yesterday,
+            mailCountIn7days: res.data.data.mail_count_in_7days,
+            mailCountIn30days: res.data.data.mail_count_in_30days
+          }
+        )
       })
+    },
+
+    fetchMailGroupStat (params) {
+      getMailGroup(params).then(res => {
+        this.importToChartData(params.period, res.data.data)
+      })
+    },
+
+    importToChartData (period, resBody) {
+      let categories = Object.keys(resBody.send_group)
+      let series = []
+      for (var property in resBody) {
+        if (resBody.hasOwnProperty(property)) {
+          let data = Object.values(resBody[property])
+
+          series.push({
+            name: property,
+            type: 'line',
+            data
+          })
+        }
+      }
+      this[period].series = series
+      this[period].categories = categories
     }
   }
 }
