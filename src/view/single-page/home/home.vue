@@ -1,9 +1,16 @@
 <template>
   <div>
     <Row :gutter="20">
-      <i-col :xs="24" :md="12" :lg="12" v-for="(infor, i) in inforCardData" :key="`infor-${i}`" style="height: 120px;padding-bottom: 10px;">
+      <i-col
+        :xs="24"
+        :md="12"
+        :lg="12"
+        v-for="(infor, i) in inforCardData"
+        :key="`infor-${i}`"
+        style="height: 120px;padding-bottom: 10px;"
+      >
         <infor-card shadow :color="infor.color" :icon="infor.icon" :icon-size="36">
-          <count-to :end="infor.count" count-class="count-style" :simplify="true" />
+          <count-to :end="infor.count" count-class="count-style" :simplify="true"/>
           <p>{{ infor.title }}</p>
         </infor-card>
       </i-col>
@@ -29,10 +36,12 @@
 </template>
 
 <script>
-import InforCard from '_c/info-card'
-import CountTo from '_c/count-to'
-import { ChartPie, ChartBar } from '_c/charts'
+import InforCard from '@c/info-card'
+import CountTo from '@c/count-to'
+import { ChartPie, ChartBar } from '@c/charts'
 import Example from './example.vue'
+import { getMailCount } from '@/api/statistic'
+
 export default {
   name: 'home',
   components: {
@@ -44,12 +53,12 @@ export default {
   },
   data () {
     return {
-      inforCardData: [
-        { title: '今日发送', icon: 'md-person-add', count: 803, color: '#2d8cf0' },
-        { title: '昨日发送', icon: 'md-locate', count: 232, color: '#19be6b' },
-        { title: '7天发送', icon: 'md-help-circle', count: 143332, color: '#ff9900' },
-        { title: '30天发送', icon: 'md-share', count: 64344357, color: '#ed3f14' }
-      ],
+      mailCountStat: {
+        mailCountToday: 0,
+        mailCountYesterday: 0,
+        mailCountIn7days: 0,
+        mailCountIn30days: 0
+      },
       pieData: [
         { value: 335, name: '直接访问' },
         { value: 310, name: '邮件营销' },
@@ -68,14 +77,59 @@ export default {
       }
     }
   },
-  mounted () {
-    //
+
+  computed: {
+    inforCardData () {
+      return [
+        {
+          title: '今日发送',
+          icon: 'md-person-add',
+          count: this.mailCountStat.mailCountToday,
+          color: '#2d8cf0'
+        },
+        {
+          title: '昨日发送',
+          icon: 'md-bulb',
+          count: this.mailCountStat.mailCountYesterday,
+          color: '#19be6b'
+        },
+        {
+          title: '7天发送',
+          icon: 'ios-send',
+          count: this.mailCountStat.mailCountIn7days,
+          color: '#ff9900'
+        },
+        {
+          title: '30天发送',
+          icon: 'md-shuffle',
+          count: this.mailCountStat.mailCountIn30days,
+          color: '#ed3f14'
+        }
+      ]
+    }
+  },
+
+  beforeMount () {
+    this.fetchMailCountStat()
+  },
+
+  methods: {
+    fetchMailCountStat () {
+      getMailCount().then(res => {
+        this.mailCountStat = Object.assign({}, {
+          mailCountToday: res.data.data.mail_count_today,
+          mailCountYesterday: res.data.data.mail_count_yesterday,
+          mailCountIn7days: res.data.data.mail_count_in_7days,
+          mailCountIn30days: res.data.data.mail_count_in_30days
+        })
+      })
+    }
   }
 }
 </script>
 
 <style lang="less">
-.count-style{
+.count-style {
   font-size: 50px;
 }
 </style>
