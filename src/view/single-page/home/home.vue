@@ -22,18 +22,21 @@
         <example :categories="hour.categories" :series="hour.series" style="height: 400px;"/>
       </Card>
     </Row>
+    <br>
      <Row>
       <h1>每天邮件统计</h1>
       <Card shadow>
         <example :categories="day.categories" :series="day.series" style="height: 400px;"/>
       </Card>
     </Row>
+    <br>
      <Row>
       <h1>每周邮件统计</h1>
       <Card shadow>
         <example :categories="week.categories" :series="week.series" style="height: 400px;"/>
       </Card>
     </Row>
+    <br>
      <Row>
       <h1>每月邮件统计</h1>
       <Card shadow>
@@ -49,6 +52,7 @@ import CountTo from '@c/count-to'
 import { ChartPie, ChartBar } from '@c/charts'
 import Example from './example.vue'
 import { getMailCount, getMailGroup } from '@/api/statistic'
+import moment from 'moment'
 
 export default {
   name: 'home',
@@ -135,10 +139,27 @@ export default {
 
   beforeMount () {
     this.fetchMailCountStat()
-    this.fetchMailGroupStat({ period: 'hour', begin_at: '2019-04-15', end_at: '2019-04-30' })
-    this.fetchMailGroupStat({ period: 'day', begin_at: '2019-04-01', end_at: '2019-04-30' })
-    this.fetchMailGroupStat({ period: 'week', begin_at: '2019-04-15', end_at: '2019-04-30' })
-    this.fetchMailGroupStat({ period: 'month', begin_at: '2019-03-01', end_at: '2019-05-01' })
+
+    this.fetchMailGroupStat({
+      period: 'hour',
+      begin_at: moment().subtract(24, 'hours').toString(),
+      end_at: moment().toString()
+    })
+    this.fetchMailGroupStat({
+      period: 'day',
+      begin_at: moment().subtract(30, 'days').toString(),
+      end_at: moment().toString()
+    })
+    this.fetchMailGroupStat({
+      period: 'week',
+      begin_at: moment().subtract(7, 'weeks').toString(),
+      end_at: moment().toString()
+    })
+    this.fetchMailGroupStat({
+      period: 'month',
+      begin_at: moment().subtract(5, 'months').toString(),
+      end_at: moment().toString()
+    })
   },
 
   methods: {
