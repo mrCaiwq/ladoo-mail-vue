@@ -44,7 +44,6 @@ class HttpRequest {
       config => {
         // 添加全局的loading...
         if (!Object.keys(this.queue).length) {
-          // Spin.show() // 不建议开启，因为界面不友好
           LoadingBar.start()
         }
         const token = getToken()
@@ -60,7 +59,6 @@ class HttpRequest {
     // 响应拦截
     instance.interceptors.response.use(
       res => {
-        console.log('%c 接口请求', 'color: #4CAF50; font-weight: bold', res)
         this.destroy(url)
         const { data, status } = res
         if (res.data && (res.data.code > 400 || res.data.meta.code !== 0)) {

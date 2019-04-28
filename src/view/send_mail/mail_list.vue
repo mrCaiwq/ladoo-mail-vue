@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <Table :columns="mailColumns" :data="mails">
@@ -23,6 +22,7 @@
 </template>
 <script>
 import { getEmailList } from '@/api/email'
+import { extractContentFromHtml } from '@/libs/util'
 
 export default {
   data () {
@@ -56,6 +56,7 @@ export default {
   },
 
   methods: {
+    extractContentFromHtml,
     fetchEmails () {
       let param = {
         page: this.page,
@@ -71,10 +72,6 @@ export default {
     changePage (page) {
       this.page = page
       this.fetchEmails()
-    },
-
-    extractContentFromHtml (htmlString) {
-      return htmlString.replace(/<[^>]+>/g, ' ')
     }
   }
 }

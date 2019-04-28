@@ -3,7 +3,7 @@ export default {
   login: '登录',
   components: '组件',
   send_mail: '邮件',
-  send_mail_page: '发送',
+  send_mail_page: '写邮件',
   mails: '查看邮件',
   mail_subscription_page: '订阅管理',
   contacts: '联系人',
