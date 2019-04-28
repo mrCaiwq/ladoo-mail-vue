@@ -99,7 +99,7 @@ All the best,
           let { tableData } = getTableDataFromArray(data)
           tableData.forEach(row => {
             if (row.recipients) {
-              this.recipientTags.push(row.recipients)
+              this.formItem.recipients.push(row.recipients)
             }
           })
         }).catch(() => {
