@@ -129,6 +129,7 @@ export default [
       {
         path: 'contacts_group',
         name: 'contact_group',
+        component: () => import('@/view/groups/groups_list.vue'),
         meta: {
           icon: 'md-arrow-dropdown-circle',
           title: '联系人分组'

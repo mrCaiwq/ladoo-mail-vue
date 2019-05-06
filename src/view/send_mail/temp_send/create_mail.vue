@@ -43,11 +43,10 @@ export default {
     InputTag
   },
   data () {
-    let recipient = 'admin@qq.com'
     return {
       formItem: {
-        recipients: [recipient],
-        sender: 'admin@qq.com',
+        recipients: ['hjiangwen1@163.com'],
+        sender: 'hjiangwen1@163.com',
         content: `In working with other << INSERT INDUSTRY OR POSITION >>, one of the key issues they’re struggling with is << INSERT KEY ISSUE >>.
 
 This past year we helped numerous companies to << INSERT BUSINESS DRIVER >>, resulting << MONEY SAVED, REVENUE ADDED, PRODUCTIVITY INCREASES >>.
