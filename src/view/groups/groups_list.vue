@@ -3,7 +3,12 @@
     <div class="filter-wrapper">
       <Button type="primary" @click="showGroupModal">创建分组</Button>
     </div>
-    <Table :columns="groupColumns" :data="groups"></Table>
+    <Table :columns="groupColumns" :data="groups">
+       <template slot-scope="{ row }" slot="action">
+          <Button type="primary" size="small" style="margin-right: 5px" @click="showUpdateModal(row)">修改</Button>
+          <Button type="error" size="small" @click="remove(row)">删除</Button>
+        </template>
+    </Table>
     <Page
       :current.sync="page"
       :total="total"
@@ -18,7 +23,7 @@
         <span>创建联系人分组</span>
       </p>
       <Form ref="groupForm" :model="groupForm" :rules="ruleCustom" :label-width="80">
-        <FormItem label="姓名" prop="name">
+        <FormItem label="名称" prop="name">
           <Input type="text" v-model="groupForm.name"/>
         </FormItem>
       </Form>
@@ -30,7 +35,7 @@
 </template>
 
 <script>
-import { createGroup, getGroupList } from '@/api/group'
+import { createGroup, getGroupList, updateGroup } from '@/api/group'
 
 export default {
   data () {
@@ -48,6 +53,10 @@ export default {
         {
           title: '创建时间',
           key: 'created_at'
+        },
+        {
+          title: '操作',
+          slot: 'action'
         }
       ],
       groups: [],
@@ -55,6 +64,7 @@ export default {
       total: 10,
       perPage: 30,
       groupForm: {
+        id: null,
         name: ''
       },
       ruleCustom: {
@@ -92,7 +102,12 @@ export default {
     submitForm () {
       this.$refs['groupForm'].validate((valid) => {
         if (!valid) return
-        this.createGroup()
+
+        if (this.groupForm.id) {
+          this.updateGroup()
+        } else {
+          this.createGroup()
+        }
       })
     },
 
@@ -102,6 +117,23 @@ export default {
         this.visibleModal = false
         this.fetchGroups()
       })
+    },
+
+    updateGroup () {
+      updateGroup(this.groupForm).then(res => {
+        this.$Message.success('修改成功')
+        this.visibleModal = false
+        this.fetchGroups()
+      })
+    },
+
+    remove (group) {
+      console.log(group)
+    },
+
+    showUpdateModal (group) {
+      this.groupForm = Object.assign({}, group)
+      this.visibleModal = true
     }
   }
 }

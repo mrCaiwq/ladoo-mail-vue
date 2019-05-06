@@ -9,6 +9,15 @@ export const createGroup = ({ name }) => {
   })
 }
 
+export const updateGroup = ({ id, name }) => {
+  const data = { name }
+  return axios.request({
+    url: `groups/${id}`,
+    data,
+    method: 'put'
+  })
+}
+
 export const getGroupList = ({ page = 1, per_page = null }) => {
   let params = { page }
   if (per_page) {
