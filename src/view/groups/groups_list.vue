@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { createGroup, getGroupList, updateGroup } from '@/api/group'
+import { createGroup, getGroupList, updateGroup, deleteGroup } from '@/api/group'
 
 export default {
   data () {
@@ -127,13 +127,23 @@ export default {
       })
     },
 
-    remove (group) {
-      console.log(group)
-    },
-
     showUpdateModal (group) {
       this.groupForm = Object.assign({}, group)
       this.visibleModal = true
+    },
+
+    remove (group) {
+      this.$Modal.confirm({
+        loading: true,
+        title: '确认要删除该分组吗？',
+        onOk: () => {
+          deleteGroup(group.id).then(res => {
+            this.fetchGroups()
+            this.$Message.success('删除成功')
+            this.$Modal.remove()
+          })
+        }
+      })
     }
   }
 }

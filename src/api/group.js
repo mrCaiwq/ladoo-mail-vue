@@ -18,6 +18,13 @@ export const updateGroup = ({ id, name }) => {
   })
 }
 
+export const deleteGroup = (id) => {
+  return axios.request({
+    url: `groups/${id}`,
+    method: 'delete'
+  })
+}
+
 export const getGroupList = ({ page = 1, per_page = null }) => {
   let params = { page }
   if (per_page) {
