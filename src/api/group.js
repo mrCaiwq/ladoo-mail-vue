@@ -8,3 +8,16 @@ export const createGroup = ({ name }) => {
     method: 'post'
   })
 }
+
+export const getGroupList = ({ page = 1, per_page = null }) => {
+  let params = { page }
+  if (per_page) {
+    params.per_page = per_page
+  }
+
+  return axios.request({
+    url: 'groups',
+    params,
+    method: 'get'
+  })
+}

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { createGroup } from '@/api/group'
+import { createGroup, getGroupList } from '@/api/group'
 
 export default {
   data () {
@@ -50,59 +50,10 @@ export default {
           key: 'created_at'
         }
       ],
-      groups: [
-        {
-          id: 9,
-          created_at: '2019-04-29T00:17:21.336+08:00',
-          name: 'name-7',
-          organization_id: 13,
-          position: 0,
-          updated_at: '2019-04-29T00:17:21.336+08:00',
-          user_id: 13,
-          contacts: [
-            {
-              id: 11,
-              company: 'Coca Cola',
-              created_at: '2019-04-29T00:17:21.341+08:00',
-              description: 'description',
-              email: 'recipient-8@example.com',
-              gender: null,
-              group_id: 9,
-              name: 'recipient-8',
-              organization_id: 13,
-              updated_at: '2019-04-29T00:17:21.341+08:00',
-              user_id: 13
-            }
-          ]
-        },
-        {
-          id: 11,
-          created_at: '2019-04-29T00:17:21.353+08:00',
-          name: 'name-9',
-          organization_id: 13,
-          position: 1,
-          updated_at: '2019-04-29T00:17:21.353+08:00',
-          user_id: 13,
-          contacts: [
-            {
-              id: 13,
-              company: 'Coca Cola',
-              created_at: '2019-04-29T00:17:21.358+08:00',
-              description: 'description',
-              email: 'recipient-10@example.com',
-              gender: null,
-              group_id: 11,
-              name: 'recipient-10',
-              organization_id: 13,
-              updated_at: '2019-04-29T00:17:21.358+08:00',
-              user_id: 13
-            }
-          ]
-        }
-      ],
+      groups: [],
       page: 1,
       total: 10,
-      perPage: 20,
+      perPage: 30,
       groupForm: {
         name: ''
       },
@@ -112,13 +63,30 @@ export default {
     }
   },
 
+  beforeMount () {
+    this.fetchGroups()
+  },
+
   methods: {
     showGroupModal () {
       this.visibleModal = true
     },
 
-    changePage () {
+    fetchGroups () {
+      let param = {
+        page: this.page,
+        per_page: this.perPage
+      }
+      getGroupList(param).then(res => {
+        let { data, meta } = res.data
+        this.groups = data
+        this.total = meta.total_count
+      })
+    },
 
+    changePage (page) {
+      this.page = page
+      this.fetchGroups()
     },
 
     submitForm () {
@@ -132,6 +100,7 @@ export default {
       createGroup(this.groupForm).then(res => {
         this.$Message.success('创建成功')
         this.visibleModal = false
+        this.fetchGroups()
       })
     }
   }
