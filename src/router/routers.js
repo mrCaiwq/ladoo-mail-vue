@@ -121,6 +121,7 @@ export default [
       {
         path: '/contacts',
         name: 'contacts_list',
+        component: () => import('@/view/contacts/contact_list.vue'),
         meta: {
           icon: 'md-arrow-dropdown-circle',
           title: '联系人'
