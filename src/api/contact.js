@@ -10,6 +10,16 @@ export const createContact = (data) => {
   })
 }
 
+export const importContact = (file) => {
+  let data = new FormData()
+  data.append('file', file)
+  return axios.request({
+    url: 'contacts/import_csv',
+    data,
+    method: 'post'
+  })
+}
+
 export const updateContact = (data) => {
   return axios.request({
     url: `contacts/${data.id}`,

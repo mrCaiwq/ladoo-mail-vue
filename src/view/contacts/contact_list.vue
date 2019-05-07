@@ -12,6 +12,9 @@
           <Button type="primary" @click="fetchContacts">查询</Button>
         </FormItem>
     </Form>
+      <Upload class="import-btn" :before-upload="importContact" action="" accept="csv">
+        <Button type="primary" icon="ios-cloud-upload-outline">导入联系人</Button>
+      </Upload>
       <Button type="primary" @click="showContactModal">创建联系人</Button>
     </div>
     <Table :columns="contactColumns" :data="contacts">
@@ -69,7 +72,8 @@ import {
   getContactList,
   createContact,
   updateContact,
-  deleteContact
+  deleteContact,
+  importContact
 } from '@/api/contact'
 import { getGroupList } from '@/api/group'
 
@@ -232,7 +236,22 @@ export default {
           })
         }
       })
+    },
+
+    importContact (file) {
+      importContact(file).then(res => {
+        this.$Message.success('上传成功')
+        this.fetchGroups()
+      })
+      return false
     }
   }
 }
 </script>
+
+<style>
+  .import-btn {
+    margin-right: 20px;
+    display: inline-block;
+  }
+</style>
