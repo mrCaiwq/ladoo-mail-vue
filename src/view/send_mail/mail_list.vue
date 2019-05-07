@@ -9,6 +9,10 @@
       <template slot-scope="{ row }" slot="recipient">
         <span>{{ row.recipient }}{{ row.recipient_address }}</span>
       </template>
+
+      <template slot-scope="{ row }" slot="state">
+        <Tag :color="getStateTagColor(row.state)">{{ getStateName(row.state) }}</Tag>
+      </template>
     </Table>
     <Page
       :current.sync="page"
@@ -42,12 +46,35 @@ export default {
           title: '时间',
           key: 'created_at',
           width: 260
+        },
+        {
+          title: '状态',
+          slot: 'state',
+          width: 260
         }
       ],
       mails: [],
       page: 1,
       total: 10,
-      perPage: 20
+      perPage: 20,
+      stateName: {
+        ready: '未发送',
+        delivering: '发送中',
+        delivered: '已发送',
+        opened: '已阅读',
+        failure: '失败',
+        rejected: '拒绝发送',
+        clicked: '已点击'
+      },
+      stateTagColor: {
+        ready: 'default',
+        delivering: 'default',
+        delivered: 'primary',
+        opened: 'success',
+        failure: 'error',
+        rejected: 'error',
+        clicked: 'success'
+      }
     }
   },
 
@@ -56,6 +83,14 @@ export default {
   },
 
   methods: {
+    getStateTagColor (state) {
+      return this.stateTagColor[state]
+    },
+
+    getStateName (state) {
+      return this.stateName[state]
+    },
+
     extractContentFromHtml,
     fetchEmails () {
       let param = {
