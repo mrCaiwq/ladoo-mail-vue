@@ -23,16 +23,18 @@
       show-total
     />
 
-    <Modal v-model="visibleModal" width="360">
+    <Modal v-model="isModalVisible" width="360">
       <p slot="header" class="modal-header">
-        <span>创建联系人</span>
+        <span> {{ formTitle }} </span>
       </p>
-      <Form ref="contactForm" :model="contactForm" :rules="ruleCustom" :label-width="80">
+      <Form ref="contactForm" :model="contactForm" :rules="formRules" :label-width="80">
         <FormItem label="邮箱地址" prop="email">
           <Input type="text" v-model="contactForm.email"/>
         </FormItem>
         <FormItem label="分组" prop="group_id">
-          <Input type="text" v-model="contactForm.group_id"/>
+          <Select v-model="contactForm.group_id">
+            <Option v-for="item in groups" :value="item.id" :key="item.id">{{ item.name }}</Option>
+          </Select>
         </FormItem>
         <FormItem label="名称" prop="name">
           <Input type="text" v-model="contactForm.name"/>
@@ -45,7 +47,7 @@
         </FormItem>
       </Form>
       <div slot="footer">
-        <Button type="primary" @click="submitForm">创建</Button>
+        <Button type="primary" @click="submitForm"> {{ formSubmitText }} </Button>
       </div>
     </Modal>
   </div>
@@ -58,12 +60,13 @@ import {
   updateContact,
   deleteContact
 } from '@/api/contact'
+import { getGroupList } from '@/api/group'
 
 export default {
   name: 'ContactList',
   data () {
     return {
-      visibleModal: false,
+      isModalVisible: false,
       contactColumns: [
         {
           title: '编号',
@@ -102,20 +105,47 @@ export default {
         name: null,
         description: null
       },
-      ruleCustom: {
-        email: { required: true, message: '邮箱不能为空', trigger: 'blur' },
-        group_id: { required: true, message: '分组不能为空', trigger: 'blur' }
-      }
+      formRules: {
+        email: [
+          { required: true, message: '邮箱不能为空', trigger: 'blur' },
+          { type: 'email', message: '邮件格式不正确', trigger: 'blur' }
+        ],
+        group_id: { type: 'number', required: true, message: '分组不能为空', trigger: 'change' }
+      },
+      groups: []
+    }
+  },
+
+  computed: {
+    isCreate () {
+      return typeof this.contactForm.id === 'undefined' || this.contactForm.id === null
+    },
+    formTitle () {
+      return this.isCreate ? '创建联系人' : '修改联系人'
+    },
+    formSubmitText () {
+      return this.isCreate ? '创建' : '修改'
     }
   },
 
   beforeMount () {
     this.fetchContacts()
+    this.fetchGroups()
+  },
+
+  watch: {
+    isModalVisible (visible, _) {
+      if (!visible) { this.contactForm = {} }
+    }
   },
 
   methods: {
+    fetchGroups () {
+      getGroupList({ per_page: 100 }).then(res => { this.groups = res.data.data })
+    },
+
     showContactModal () {
-      this.visibleModal = true
+      this.isModalVisible = true
     },
 
     fetchContacts () {
@@ -150,22 +180,26 @@ export default {
     createContact () {
       createContact(this.contactForm).then(res => {
         this.$Message.success('创建成功')
-        this.visibleModal = false
         this.fetchContacts()
+        this.hideModal()
       })
     },
 
     updateContact () {
       updateContact(this.contactForm).then(res => {
         this.$Message.success('修改成功')
-        this.visibleModal = false
         this.fetchContacts()
+        this.hideModal()
       })
+    },
+
+    hideModal () {
+      this.isModalVisible = false
     },
 
     showUpdateModal (contact) {
       this.contactForm = Object.assign({}, contact)
-      this.visibleModal = true
+      this.isModalVisible = true
     },
 
     remove (contact) {
