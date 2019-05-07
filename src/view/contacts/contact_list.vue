@@ -11,7 +11,7 @@
         <FormItem>
           <Button type="primary" @click="fetchContacts">查询</Button>
         </FormItem>
-    </Form>
+      </Form>
       <Upload class="import-btn" :before-upload="importContact" action="" accept="csv">
         <Button type="primary" icon="ios-cloud-upload-outline">导入联系人</Button>
       </Upload>

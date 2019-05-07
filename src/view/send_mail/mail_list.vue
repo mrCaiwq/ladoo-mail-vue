@@ -1,5 +1,18 @@
 <template>
   <div>
+    <div class="filter-wrapper">
+      <Form ref="searchForm" :model="searchForm" inline>
+        <FormItem prop="email">
+          <Input type="text" v-model="searchForm.recipient_address" placeholder="收件邮箱"/>
+        </FormItem>
+        <FormItem prop="name">
+          <Input type="text" v-model="searchForm.subject" placeholder="主题"/>
+        </FormItem>
+        <FormItem>
+          <Button type="primary" @click="fetchEmails">查询</Button>
+        </FormItem>
+      </Form>
+    </div>
     <Table :columns="mailColumns" :data="mails">
       <template slot-scope="{ row }" slot="subject">
         <strong>{{ row.subject }}</strong>
@@ -74,6 +87,11 @@ export default {
         failure: 'error',
         rejected: 'error',
         clicked: 'success'
+      },
+
+      searchForm: {
+        recipient: null,
+        subject: null
       }
     }
   },
@@ -83,19 +101,12 @@ export default {
   },
 
   methods: {
-    getStateTagColor (state) {
-      return this.stateTagColor[state]
-    },
-
-    getStateName (state) {
-      return this.stateName[state]
-    },
-
     extractContentFromHtml,
     fetchEmails () {
       let param = {
         page: this.page,
-        per_page: this.perPage
+        per_page: this.perPage,
+        ...this.searchForm
       }
       getEmailList(param).then(res => {
         let { data, meta } = res.data
@@ -107,6 +118,14 @@ export default {
     changePage (page) {
       this.page = page
       this.fetchEmails()
+    },
+
+    getStateTagColor (state) {
+      return this.stateTagColor[state]
+    },
+
+    getStateName (state) {
+      return this.stateName[state]
     }
   }
 }

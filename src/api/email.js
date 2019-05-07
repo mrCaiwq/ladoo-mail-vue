@@ -1,4 +1,5 @@
 import axios from '@/libs/api.request'
+import _ from 'lodash'
 
 export const batchCreate = ({ recipients, sender, subject, content }) => {
   const data = {
@@ -16,17 +17,8 @@ export const batchCreate = ({ recipients, sender, subject, content }) => {
   })
 }
 
-/**
- *
- * @param {number} page
- */
-export const getEmailList = ({ page = 1, per_page = null }) => {
-  let params = {
-    page
-  }
-  if (per_page) {
-    params.per_page = per_page
-  }
+export const getEmailList = (params) => {
+  params = _.omitBy(params, _.isNil)
   return axios.request({
     url: 'emails',
     params: params,
