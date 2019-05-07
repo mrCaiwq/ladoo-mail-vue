@@ -24,6 +24,7 @@
     "iview": "^3.2.2",
     "iview-area": "^1.5.17",
     "js-cookie": "^2.2.0",
+    "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "simplemde": "^1.11.2",
     "sortablejs": "^1.7.0",

@@ -1,5 +1,6 @@
 
 import axios from '@/libs/api.request'
+import _ from 'lodash'
 
 export const createContact = (data) => {
   return axios.request({
@@ -24,12 +25,8 @@ export const deleteContact = (id) => {
   })
 }
 
-export const getContactList = ({ page = 1, per_page = null }) => {
-  let params = { page }
-  if (per_page) {
-    params.per_page = per_page
-  }
-
+export const getContactList = (params) => {
+  params = _.omitBy(params, _.isNil)
   return axios.request({
     url: 'contacts',
     params,

@@ -1,6 +1,17 @@
 <template>
   <div>
     <div class="filter-wrapper">
+      <Form ref="searchForm" :model="searchForm" inline>
+        <FormItem prop="email">
+          <Input type="text" v-model="searchForm.email" placeholder="Email"/>
+        </FormItem>
+        <FormItem prop="name">
+          <Input type="text" v-model="searchForm.name" placeholder="名称"/>
+        </FormItem>
+        <FormItem>
+          <Button type="primary" @click="fetchContacts">查询</Button>
+        </FormItem>
+    </Form>
       <Button type="primary" @click="showContactModal">创建联系人</Button>
     </div>
     <Table :columns="contactColumns" :data="contacts">
@@ -112,7 +123,12 @@ export default {
         ],
         group_id: { type: 'number', required: true, message: '分组不能为空', trigger: 'change' }
       },
-      groups: []
+      groups: [],
+
+      searchForm: {
+        email: null,
+        name: null
+      }
     }
   },
 
@@ -151,8 +167,10 @@ export default {
     fetchContacts () {
       let param = {
         page: this.page,
-        per_page: this.perPage
+        per_page: this.perPage,
+        ...this.searchForm
       }
+
       getContactList(param).then(res => {
         let { data, meta } = res.data
         this.contacts = data
