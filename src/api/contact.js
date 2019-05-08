@@ -43,3 +43,12 @@ export const getContactList = (params) => {
     method: 'get'
   })
 }
+
+export const searchContact = (params) => {
+  params = _.omitBy(params, _.isNil)
+  return axios.request({
+    url: 'contacts/search',
+    params,
+    method: 'get'
+  })
+}
