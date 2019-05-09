@@ -1,15 +1,10 @@
 import axios from '@/libs/api.request'
 import _ from 'lodash'
 
-export const batchCreate = ({ recipients, sender, subject, content }) => {
-  const data = {
-    recipients,
-    sender: {
-      email: sender
-    },
-    subject,
-    content
-  }
+export const batchCreate = (params) => {
+  let data = { ...params }
+  let sender_email = data.sender
+  data.sender = { email: sender_email }
   return axios.request({
     url: 'emails/batch',
     data,
