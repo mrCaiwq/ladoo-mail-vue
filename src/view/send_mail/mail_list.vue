@@ -17,9 +17,8 @@
       <template slot-scope="{ row }" slot="subject">
         <router-link :to="`/send_mail/mail_detail/${row.id}`">
           <strong>{{ row.subject }}</strong>
-          <span class="mail-content" >{{ " - " + extractContentFromHtml(row.content) }}</span>
+          <span class="mail-content">{{ " - " + extractContentFromHtml(row.content) }}</span>
         </router-link>
-
       </template>
 
       <template slot-scope="{ row }" slot="recipient">
@@ -27,7 +26,7 @@
       </template>
 
       <template slot-scope="{ row }" slot="created_at">
-        <span> {{ formatTime(row.created_at) }}</span>
+        <span>{{ formatTime(row.created_at) }}</span>
       </template>
 
       <template slot-scope="{ row }" slot="state">
@@ -72,6 +71,17 @@ export default {
         {
           title: '状态',
           slot: 'state',
+          filters: [
+            { label: '未发送', value: 'ready' },
+            { label: '发送中', value: 'delivering' },
+            { label: '已发送', value: 'delivered' },
+            { label: '已阅读', value: 'opened' },
+            { label: '失败', value: 'failure' },
+            { label: '拒绝发送', value: 'rejected' },
+            { label: '已点击', value: 'clicked' }
+          ],
+          filterMultiple: false,
+          filterRemote: this.filterByState,
           width: 160
         }
       ],
@@ -81,7 +91,8 @@ export default {
       perPage: 20,
       searchForm: {
         recipient: null,
-        subject: null
+        subject: null,
+        state: null
       }
     }
   },
@@ -110,14 +121,18 @@ export default {
     changePage (page) {
       this.page = page
       this.fetchEmails()
+    },
+
+    filterByState (states) {
+      this.searchForm.state = states[0]
+      this.fetchEmails()
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-
 .mail-content {
-  color: @subsidiary-color
+  color: @subsidiary-color;
 }
 </style>

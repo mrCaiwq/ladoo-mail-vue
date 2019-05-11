@@ -5,7 +5,7 @@
       <Row class="subcontent">
         <Col span="12">
           <p>发件人：{{ email.sender_name }} &lt;{{ email.sender_address }}&gt; </p>
-          <p>时 间：{{ formatTime(email.created_at) }}</p>
+          <p>发送时间：{{ formatTime(email.created_at) }}</p>
           <p>收件人：{{ email.recipient_name }} &lt;{{ email.recipient_address }}&gt;</p>
         </Col>
         <Col span="12">
@@ -14,14 +14,15 @@
             <Tag :color="getStateTagColor(email.state)">{{ $t(`email.state.${email.state}`) }}</Tag>
           </p>
           <p v-if="email.fail_reason">发送失败原因：{{ email.fail_reason }}</p>
+          <p>接收时间：{{ formatTime(email.delivered_at) }}</p>
           <p>
-            打开邮件时间：
-            <span v-if="email.is_open">{{ formatTime(email.opened_at) }}</span>
+            阅读时间：
+            <span v-if="email.opened_at">{{ formatTime(email.opened_at) }}</span>
             <span v-else>未打开</span>
           </p>
           <p>
-            点击邮件时间：
-            <span v-if="email.is_click">{{ formatTime(email.clicked_at) }}</span>
+            点击链接时间：
+            <span v-if="email.clicked_at">{{ formatTime(email.clicked_at) }}</span>
             <span v-else>未点击</span>
           </p>
           <p>
