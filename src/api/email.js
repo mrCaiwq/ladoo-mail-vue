@@ -20,3 +20,10 @@ export const getEmailList = (params) => {
     method: 'get'
   })
 }
+
+export const getEmail = (id) => {
+  return axios.request({
+    url: `emails/${id}`,
+    method: 'get'
+  })
+}

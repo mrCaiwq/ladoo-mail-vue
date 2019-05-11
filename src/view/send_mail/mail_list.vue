@@ -15,16 +15,23 @@
     </div>
     <Table :columns="mailColumns" :data="mails">
       <template slot-scope="{ row }" slot="subject">
-        <strong>{{ row.subject }}</strong>
-        <span class="mail-content" >{{ " - " + extractContentFromHtml(row.content) }}</span>
+        <router-link :to="`/send_mail/mail_detail/${row.id}`">
+          <strong>{{ row.subject }}</strong>
+          <span class="mail-content" >{{ " - " + extractContentFromHtml(row.content) }}</span>
+        </router-link>
+
       </template>
 
       <template slot-scope="{ row }" slot="recipient">
         <span>{{ row.recipient }}{{ row.recipient_address }}</span>
       </template>
 
+      <template slot-scope="{ row }" slot="created_at">
+        <span> {{ formatTime(row.created_at) }}</span>
+      </template>
+
       <template slot-scope="{ row }" slot="state">
-        <Tag :color="getStateTagColor(row.state)">{{ getStateName(row.state) }}</Tag>
+        <Tag :color="getStateTagColor(row.state)">{{ $t(`email.state.${row.state}`) }}</Tag>
       </template>
     </Table>
     <Page
@@ -40,6 +47,8 @@
 <script>
 import { getEmailList } from '@/api/email'
 import { extractContentFromHtml } from '@/libs/util'
+import { formatTime } from '@/libs/time'
+import { getStateTagColor } from '@/libs/tag'
 
 export default {
   data () {
@@ -57,38 +66,19 @@ export default {
         },
         {
           title: '时间',
-          key: 'created_at',
-          width: 260
+          slot: 'created_at',
+          width: 160
         },
         {
           title: '状态',
           slot: 'state',
-          width: 260
+          width: 160
         }
       ],
       mails: [],
       page: 1,
       total: 10,
       perPage: 20,
-      stateName: {
-        ready: '未发送',
-        delivering: '发送中',
-        delivered: '已发送',
-        opened: '已阅读',
-        failure: '失败',
-        rejected: '拒绝发送',
-        clicked: '已点击'
-      },
-      stateTagColor: {
-        ready: 'default',
-        delivering: 'default',
-        delivered: 'primary',
-        opened: 'success',
-        failure: 'error',
-        rejected: 'error',
-        clicked: 'success'
-      },
-
       searchForm: {
         recipient: null,
         subject: null
@@ -102,6 +92,8 @@ export default {
 
   methods: {
     extractContentFromHtml,
+    formatTime,
+    getStateTagColor,
     fetchEmails () {
       let param = {
         page: this.page,
@@ -118,14 +110,6 @@ export default {
     changePage (page) {
       this.page = page
       this.fetchEmails()
-    },
-
-    getStateTagColor (state) {
-      return this.stateTagColor[state]
-    },
-
-    getStateName (state) {
-      return this.stateName[state]
     }
   }
 }

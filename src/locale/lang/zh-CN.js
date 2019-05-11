@@ -1,4 +1,6 @@
 export default {
+  true: '是',
+  false: '否',
   home: '首页',
   login: '登录',
   components: '组件',
@@ -6,6 +8,7 @@ export default {
   send_mail_page: '写邮件',
   mails: '查看邮件',
   mail_subscription_page: '订阅管理',
+  mail_detail: '邮件详情',
   contacts: '联系人',
   contacts_list: '联系人列表',
   contact_group: '联系人分组',
@@ -50,5 +53,16 @@ export default {
   tree_table_page: '树状表格',
   org_tree_page: '组织结构树',
   drag_drawer_page: '可拖动抽屉',
-  tree_select_page: '树状下拉选择器'
+  tree_select_page: '树状下拉选择器',
+  email: {
+    state: {
+      ready: '未发送',
+      delivering: '发送中',
+      delivered: '已发送',
+      opened: '已阅读',
+      failure: '失败',
+      rejected: '拒绝发送',
+      clicked: '已点击'
+    }
+  }
 }

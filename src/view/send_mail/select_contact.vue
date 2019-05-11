@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Modal v-model="visible" width="500" class="select-contact-modal">
+    <Modal v-model="visible" width="700" class="select-contact-modal">
       <p slot="header" class="modal-header">
         <span>选择联系人</span>
       </p>
@@ -27,9 +27,8 @@
               <span class="group-name" @click="onClickGroupLabel(group.id)">{{ group.name }}</span>
             </div>
           </Col>
-          <Divider type="vertical"/>
 
-          <Col span="12">
+          <Col span="13">
             <p class="panel-title">
               <Checkbox
                 :indeterminate="contactIndeterminate"

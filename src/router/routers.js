@@ -80,13 +80,13 @@ export default [
     component: Main,
     children: [
       {
-        path: 'temp_send_mail',
+        path: 'send_mail',
         name: 'send_mail_page',
         meta: {
           icon: 'md-arrow-dropdown-circle',
           title: '群发'
         },
-        component: () => import('@/view/send_mail/temp_send/create_mail.vue')
+        component: () => import('@/view/send_mail/create_mail.vue')
       },
       {
         path: 'mails',
@@ -96,16 +96,17 @@ export default [
           title: '查看邮件'
         },
         component: () => import('@/view/send_mail/mail_list.vue')
+      },
+      {
+        path: 'mail_detail/:id',
+        name: 'mail_detail',
+        meta: {
+          hideInMenu: true,
+          icon: 'md-arrow-dropdown-circle',
+          title: '邮件详情'
+        },
+        component: () => import('@/view/send_mail/mail_detail.vue')
       }
-      // {
-      //   path: 'subscription',
-      //   name: 'mail_subscription_page',
-      //   meta: {
-      //     icon: 'md-arrow-dropdown-circle',
-      //     title: '订阅管理'
-      //   },
-      //   component: () => import('@/view/send_mail/subscription/editor.vue')
-      // }
     ]
   },
 

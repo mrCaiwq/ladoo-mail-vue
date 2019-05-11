@@ -2,7 +2,12 @@
   <div>
     <Form ref="emailForm" :model="formItem" :rules="rules" :label-width="80">
       <FormItem label="收件人" prop="recipients">
-        <input-tag v-model="formItem.recipients" :allow-duplicates="true" placeholder="请输入收件人邮箱"/>
+        <input-tag
+          v-model="formItem.recipients"
+          :allow-duplicates="true"
+          validate="email"
+          placeholder="请输入收件人邮箱"
+          />
       </FormItem>
 
       <div class="group-and-btn">
@@ -42,7 +47,7 @@
 
 <script>
 import Editor from '@c/editor'
-import SelectContactModal from '../select_contact'
+import SelectContactModal from './select_contact'
 import { batchCreate } from '@/api/email'
 import { getArrayFromFile, getTableDataFromArray } from '@/libs/util'
 import InputTag from 'vue-input-tag'
