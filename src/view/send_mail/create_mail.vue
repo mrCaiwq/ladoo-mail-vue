@@ -63,10 +63,10 @@ export default {
   data () {
     return {
       formItem: {
-        recipients: ['hjiangwen1@163.com'],
-        sender: 'hjiangwen1@163.com',
-        content: `In working with other << INSERT INDUSTRY OR POSITION >>, one of the key issues they’re struggling with is << INSERT KEY ISSUE >>.`,
-        subject: 'Cold Prospecting Email Templates',
+        recipients: [],
+        sender: null,
+        content: null,
+        subject: null,
         group_ids: []
       },
       rules: {
