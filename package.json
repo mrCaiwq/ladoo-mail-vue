@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
+    "build:staging": "vue-cli-service build --mode staging",
     "lint": "vue-cli-service lint",
     "push": "./deploy.sh",
     "deploy": "npm run build && npm run push",
+    "deploy:staging": "NODE_ENV=staging && npm run build:staging && npm run push",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e"
   },

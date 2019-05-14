@@ -17,7 +17,7 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    dev: 'http://47.112.137.116:9000/api',
+    dev: 'http://47.88.12.142:9090/api',
     pro: 'http://47.112.137.116:9000/api'
   },
   /**
