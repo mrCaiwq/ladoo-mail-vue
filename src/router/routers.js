@@ -106,6 +106,15 @@ export default [
           title: '邮件详情'
         },
         component: () => import('@/view/send_mail/mail_detail.vue')
+      },
+      {
+        path: 'batch_emails',
+        name: 'batch_email_stat',
+        component: () => import('@/view/send_mail/batch_email_list.vue'),
+        meta: {
+          icon: 'md-arrow-dropdown-circle',
+          title: '群发统计'
+        }
       }
     ]
   },
@@ -160,37 +169,6 @@ export default [
     ]
   },
 
-  {
-    path: '/argu',
-    name: 'argu',
-    meta: {
-      hideInMenu: true
-    },
-    component: Main,
-    children: [
-      {
-        path: 'params/:id',
-        name: 'params',
-        meta: {
-          icon: 'md-flower',
-          title: route => `{{ params }}-${route.params.id}`,
-          notCache: true,
-          beforeCloseName: 'before_close_normal'
-        },
-        component: () => import('@/view/argu-page/params.vue')
-      },
-      {
-        path: 'query',
-        name: 'query',
-        meta: {
-          icon: 'md-flower',
-          title: route => `{{ query }}-${route.query.id}`,
-          notCache: true
-        },
-        component: () => import('@/view/argu-page/query.vue')
-      }
-    ]
-  },
   {
     path: '/401',
     name: 'error_401',

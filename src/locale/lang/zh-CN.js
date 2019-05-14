@@ -9,6 +9,7 @@ export default {
   mails: '查看邮件',
   mail_subscription_page: '订阅管理',
   mail_detail: '邮件详情',
+  batch_email_stat: '群发统计',
   contacts: '联系人',
   contacts_list: '联系人列表',
   contact_group: '联系人分组',
