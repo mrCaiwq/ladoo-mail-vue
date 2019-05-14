@@ -1,15 +1,18 @@
 <template>
   <div>
     <div class="filter-wrapper">
-      <Form ref="searchForm" :model="searchForm" inline>
-        <FormItem prop="email">
+      <Form ref="searchForm" :model="searchForm" label-position="left" inline :label-width="70">
+        <FormItem prop="batch_email_id" label="群发编号">
+          <Input type="text" v-model="searchForm.batch_email_id" placeholder="群发编号"/>
+        </FormItem>
+        <FormItem prop="email" label="收件邮箱">
           <Input type="text" v-model="searchForm.recipient_address" placeholder="收件邮箱"/>
         </FormItem>
-        <FormItem prop="name">
+        <FormItem prop="name" label="主题">
           <Input type="text" v-model="searchForm.subject" placeholder="主题"/>
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="fetchEmails">查询</Button>
+          <Button type="primary" @click="onClickSearch">查询</Button>
         </FormItem>
       </Form>
     </div>
@@ -25,8 +28,14 @@
         <span>{{ row.recipient }}{{ row.recipient_address }}</span>
       </template>
 
-      <template slot-scope="{ row }" slot="created_at">
-        <span>{{ formatTime(row.created_at) }}</span>
+      <template slot-scope="{ row }" slot="opened_at">
+        <span>{{ row.opened_at && formatTime(row.opened_at) }}</span>
+      </template>
+      <template slot-scope="{ row }" slot="clicked_at">
+        <span>{{ row.clicked_at && formatTime(row.clicked_at) }}</span>
+      </template>
+      <template slot-scope="{ row }" slot="delivered_at">
+        <span>{{ row.delivered_at && formatTime(row.delivered_at) }}</span>
       </template>
 
       <template slot-scope="{ row }" slot="state">
@@ -48,6 +57,7 @@ import { getEmailList } from '@/api/email'
 import { extractContentFromHtml } from '@/libs/util'
 import { formatTime } from '@/libs/time'
 import { getStateTagColor } from '@/libs/tag'
+import _ from 'lodash'
 
 export default {
   data () {
@@ -64,9 +74,24 @@ export default {
           ellipsis: true
         },
         {
-          title: '时间',
-          slot: 'created_at',
-          width: 160
+          title: '送达时间',
+          slot: 'delivered_at',
+          width: 100
+        },
+        {
+          title: '打开时间',
+          slot: 'opened_at',
+          width: 100
+        },
+        {
+          title: '点击时间',
+          slot: 'clicked_at',
+          width: 100
+        },
+        {
+          title: '群发编号',
+          key: 'batch_email_id',
+          width: 80
         },
         {
           title: '状态',
@@ -90,6 +115,7 @@ export default {
       total: 10,
       perPage: 20,
       searchForm: {
+        batch_email_id: null,
         recipient: null,
         subject: null,
         state: null
@@ -98,6 +124,7 @@ export default {
   },
 
   beforeMount () {
+    this.setSearchFormByQuery()
     this.fetchEmails()
   },
 
@@ -105,6 +132,20 @@ export default {
     extractContentFromHtml,
     formatTime,
     getStateTagColor,
+
+    setSearchFormByQuery () {
+      let { batch_email_id } = this.$route.query
+      this.searchForm.batch_email_id = batch_email_id
+    },
+
+    onClickSearch () {
+      let query = { batch_email_id: this.searchForm.batch_email_id }
+      query = _.omitBy(query, _.isEmpty)
+      this.$router.push({ name: 'mails', query: query })
+
+      this.fetchEmails()
+    },
+
     fetchEmails () {
       let param = {
         page: this.page,

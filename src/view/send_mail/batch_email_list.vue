@@ -2,14 +2,18 @@
   <div>
     <Table :columns="batchMailColumns" :data="batchMailList">
       <template slot-scope="{ row }" slot="subject">
-        <router-link :to="`/send_mail/mail_detail/${row.id}`">
-          <strong>{{ row.subject }}</strong>
-          <span class="mail-content">{{ " - " + extractContentFromHtml(row.content) }}</span>
-        </router-link>
+        <strong>{{ row.subject }}</strong>
+        <span class="mail-content">{{ " - " + extractContentFromHtml(row.content) }}</span>
       </template>
 
-       <template slot-scope="{ row }" slot="created_at">
+      <template slot-scope="{ row }" slot="created_at">
         <span>{{ formatTime(row.created_at) }}</span>
+      </template>
+
+      <template slot-scope="{ row }" slot="action">
+        <router-link :to="{ path: '/send_mail/mails', query: { batch_email_id: row.id }}">
+          查看邮件
+        </router-link>
       </template>
 
     </Table>
@@ -45,7 +49,8 @@ export default {
         },
         {
           title: '发送人',
-          key: 'sender_name'
+          key: 'sender_name',
+          width: 100
         },
         {
           title: '主题',
@@ -81,6 +86,11 @@ export default {
           title: '失败数量',
           width: 80,
           key: 'failed_count'
+        },
+        {
+          title: '操作',
+          width: 80,
+          slot: 'action'
         }
       ],
       batchMailList: []
