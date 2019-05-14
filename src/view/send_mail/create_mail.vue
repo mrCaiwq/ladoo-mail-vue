@@ -32,8 +32,11 @@
       <FormItem label="标题" prop="subject">
         <Input v-model="formItem.subject" placeholder="请输入标题"/>
       </FormItem>
+
       <FormItem prop="content">
-        <editor ref="editor" v-model="formItem.content"/>
+        <vue-ckeditor
+        v-model="formItem.content"
+        :config="editorConfig"/>
       </FormItem>
       <FormItem>
         <Button type="primary" @click="handleSubmit">提交</Button>
@@ -46,22 +49,26 @@
 </template>
 
 <script>
-import Editor from '@c/editor'
 import SelectContactModal from './select_contact'
 import { batchCreate } from '@/api/email'
 import { getArrayFromFile, getTableDataFromArray } from '@/libs/util'
 import InputTag from 'vue-input-tag'
 import _ from 'lodash'
+import VueCkeditor from 'vue-ckeditor2'
 
 export default {
   name: 'editor_page',
   components: {
-    Editor,
     InputTag,
-    SelectContactModal
+    SelectContactModal,
+    VueCkeditor
   },
   data () {
     return {
+      editorConfig: {
+        height: 500
+      },
+
       formItem: {
         recipients: [],
         sender: null,
