@@ -19,28 +19,28 @@
     <Row>
       <h1>每小时邮件统计</h1>
       <Card shadow>
-        <example :categories="hour.categories" :series="hour.series" style="height: 400px;"/>
+        <LineChart :categories="hour.categories" :series="hour.series" style="height: 400px"/>
       </Card>
     </Row>
     <br>
      <Row>
       <h1>每天邮件统计</h1>
       <Card shadow>
-        <example :categories="day.categories" :series="day.series" style="height: 400px;"/>
+        <LineChart :categories="day.categories" :series="day.series" style="height: 400px"/>
       </Card>
     </Row>
     <br>
      <Row>
       <h1>每周邮件统计</h1>
       <Card shadow>
-        <example :categories="week.categories" :series="week.series" style="height: 400px;"/>
+        <LineChart :categories="week.categories" :series="week.series" style="height: 400px"/>
       </Card>
     </Row>
     <br>
      <Row>
       <h1>每月邮件统计</h1>
       <Card shadow>
-        <example :categories="month.categories" :series="month.series" style="height: 400px;"/>
+        <LineChart :categories="month.categories" :series="month.series" style="height: 400px"/>
       </Card>
     </Row>
   </div>
@@ -50,7 +50,7 @@
 import InforCard from '@c/info-card'
 import CountTo from '@c/count-to'
 import { ChartPie, ChartBar } from '@c/charts'
-import Example from './example.vue'
+import LineChart from './line_chart'
 import { getMailCount, getMailGroup } from '@/api/statistic'
 import moment from 'moment'
 
@@ -61,7 +61,7 @@ export default {
     CountTo,
     ChartPie,
     ChartBar,
-    Example
+    LineChart
   },
   data () {
     return {
@@ -190,7 +190,7 @@ export default {
           let data = Object.values(resBody[property])
 
           series.push({
-            name: property,
+            name: this.$t(`statistic.group.${property}`),
             type: 'line',
             data
           })

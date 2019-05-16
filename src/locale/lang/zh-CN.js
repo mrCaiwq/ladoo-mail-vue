@@ -65,5 +65,13 @@ export default {
       rejected: '拒绝发送',
       clicked: '已点击'
     }
+  },
+  statistic: {
+    group: {
+      send_group: '发送量',
+      received_group: '接收量',
+      opened_group: '打开量',
+      clicked_group: '点击链接量'
+    }
   }
 }
