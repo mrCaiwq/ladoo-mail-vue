@@ -44,6 +44,16 @@ export const createUser = (data) => {
   })
 }
 
+export const updateUser = (data) => {
+  data = _.pickBy(data, _.identity)
+
+  return axios.request({
+    url: `users/${data.id}`,
+    method: 'patch',
+    data
+  })
+}
+
 export const logout = token => {
   return axios.request({
     url: 'logout',
