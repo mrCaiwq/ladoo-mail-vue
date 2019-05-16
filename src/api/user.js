@@ -1,4 +1,5 @@
 import axios from '@/libs/api.request'
+import _ from 'lodash'
 
 export const login = ({ userName, password }) => {
   const data = {
@@ -13,9 +14,24 @@ export const login = ({ userName, password }) => {
 }
 
 export const getUserInfo = () => {
-  console.log('getUserInfo')
   return axios.request({
     url: 'users/my',
+    method: 'get'
+  })
+}
+
+export const getUserList = (params) => {
+  params = _.omitBy(params, _.isNil)
+  return axios.request({
+    url: 'users',
+    params: params,
+    method: 'get'
+  })
+}
+
+export const getUser = (id) => {
+  return axios.request({
+    url: `users/${id}`,
     method: 'get'
   })
 }

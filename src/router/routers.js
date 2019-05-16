@@ -164,7 +164,8 @@ export default [
         meta: {
           icon: 'md-arrow-dropdown-circle',
           title: '人员管理'
-        }
+        },
+        component: () => import('@/view/users/user_list.vue')
       }
     ]
   },
