@@ -54,6 +54,13 @@ export const updateUser = (data) => {
   })
 }
 
+export const deleteUser = (id) => {
+  return axios.request({
+    url: `users/${id}`,
+    method: 'delete'
+  })
+}
+
 export const logout = token => {
   return axios.request({
     url: 'logout',

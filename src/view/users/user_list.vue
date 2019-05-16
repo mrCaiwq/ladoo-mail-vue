@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { getUserList, createUser, updateUser } from '@/api/user'
+import { getUserList, createUser, updateUser, deleteUser } from '@/api/user'
 import { formatTime } from '@/libs/time'
 import _ from 'lodash'
 
@@ -235,8 +235,18 @@ export default {
       this.isUpdateModalVisible = true
     },
 
-    deleteUser () {
-
+    deleteUser (user) {
+      this.$Modal.confirm({
+        loading: true,
+        title: '确认要删除该员工吗？',
+        onOk: () => {
+          deleteUser(user.id).then(res => {
+            this.fetchUsers()
+            this.$Message.success('删除成功')
+            this.$Modal.remove()
+          })
+        }
+      })
     }
   }
 }
