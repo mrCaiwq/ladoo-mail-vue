@@ -36,6 +36,14 @@ export const getUser = (id) => {
   })
 }
 
+export const createUser = (data) => {
+  return axios.request({
+    url: `users`,
+    method: 'post',
+    data
+  })
+}
+
 export const logout = token => {
   return axios.request({
     url: 'logout',
