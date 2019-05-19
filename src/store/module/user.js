@@ -28,48 +28,49 @@ export default {
     messageContentStore: {}
   },
   mutations: {
-    setAvatar (state, avatar) {
+    setAvatar(state, avatar) {
       state.avatar =
         'https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png'
     },
-    setUserId (state, id) {
+    setUserId(state, id) {
       state.id = id
     },
-    setUserName (state, name) {
+    setUserName(state, name) {
       state.name = name
     },
-    setUserCellphone (state, cellphone) {
+    setUserCellphone(state, cellphone) {
       state.cellphone = cellphone
     },
-    setUserEmail (state, email) {
+    setUserEmail(state, email) {
       state.email = email
     },
-    setAccess (state, access) {
-      state.access = ['super_admin']
+    setAccess(state, is_admin) {
+      let access = is_admin ? ['view_user'] : []
+      state.access = access
     },
-    setUserToken (state, token) {
+    setUserToken(state, token) {
       state.token = token
       setToken(token)
     },
-    setHasGetInfo (state, status) {
+    setHasGetInfo(state, status) {
       state.hasGetInfo = status
     },
-    setMessageCount (state, count) {
+    setMessageCount(state, count) {
       state.unreadCount = count
     },
-    setMessageUnreadList (state, list) {
+    setMessageUnreadList(state, list) {
       state.messageUnreadList = list
     },
-    setMessageReadedList (state, list) {
+    setMessageReadedList(state, list) {
       state.messageReadedList = list
     },
-    setMessageTrashList (state, list) {
+    setMessageTrashList(state, list) {
       state.messageTrashList = list
     },
-    updateMessageContentStore (state, { msg_id, content }) {
+    updateMessageContentStore(state, { msg_id, content }) {
       state.messageContentStore[msg_id] = content
     },
-    moveMsg (state, { from, to, msg_id }) {
+    moveMsg(state, { from, to, msg_id }) {
       const index = state[from].findIndex(_ => _.msg_id === msg_id)
       const msgItem = state[from].splice(index, 1)[0]
       msgItem.loading = false
@@ -83,7 +84,7 @@ export default {
   },
   actions: {
     // 登录
-    handleLogin ({ commit }, { userName, password }) {
+    handleLogin({ commit }, { userName, password }) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
         login({
@@ -98,7 +99,7 @@ export default {
             commit('setUserId', data.id)
             commit('setUserCellphone', data.cellphone)
             commit('setUserEmail', data.email)
-            commit('setAccess', data.access)
+            commit('setAccess', data.is_admin)
             commit('setHasGetInfo', true)
             resolve()
           })
@@ -108,7 +109,7 @@ export default {
       })
     },
     // 退出登录
-    handleLogOut ({ state, commit }) {
+    handleLogOut({ state, commit }) {
       return new Promise((resolve, reject) => {
         logout(state.token)
           .then(() => {
@@ -126,7 +127,7 @@ export default {
       })
     },
     // 获取用户相关信息
-    getUserInfo ({ state, commit }) {
+    getUserInfo({ state, commit }) {
       return new Promise((resolve, reject) => {
         try {
           getUserInfo(state.id)
@@ -137,7 +138,7 @@ export default {
               commit('setUserId', data.id)
               commit('setUserCellphone', data.cellphone)
               commit('setUserEmail', data.email)
-              commit('setAccess', data.access)
+              commit('setAccess', data.is_admin)
               commit('setHasGetInfo', true)
               resolve(data)
             })
@@ -150,14 +151,14 @@ export default {
       })
     },
     // 此方法用来获取未读消息条数，接口只返回数值，不返回消息列表
-    getUnreadMessageCount ({ state, commit }) {
+    getUnreadMessageCount({ state, commit }) {
       getUnreadCount().then(res => {
         const { data } = res
         commit('setMessageCount', data)
       })
     },
     // 获取消息列表，其中包含未读、已读、回收站三个列表
-    getMessageList ({ state, commit }) {
+    getMessageList({ state, commit }) {
       return new Promise((resolve, reject) => {
         getMessage()
           .then(res => {
@@ -198,7 +199,7 @@ export default {
       })
     },
     // 根据当前点击的消息的id获取内容
-    getContentByMsgId ({ state, commit }, { msg_id }) {
+    getContentByMsgId({ state, commit }, { msg_id }) {
       return new Promise((resolve, reject) => {
         let contentItem = state.messageContentStore[msg_id]
         if (contentItem) {
@@ -213,7 +214,7 @@ export default {
       })
     },
     // 把一个未读消息标记为已读
-    hasRead ({ state, commit }, { msg_id }) {
+    hasRead({ state, commit }, { msg_id }) {
       return new Promise((resolve, reject) => {
         hasRead(msg_id)
           .then(() => {
@@ -231,7 +232,7 @@ export default {
       })
     },
     // 删除一个已读消息到回收站
-    removeReaded ({ commit }, { msg_id }) {
+    removeReaded({ commit }, { msg_id }) {
       return new Promise((resolve, reject) => {
         removeReaded(msg_id)
           .then(() => {
@@ -248,7 +249,7 @@ export default {
       })
     },
     // 还原一个已删除消息到已读消息
-    restoreTrash ({ commit }, { msg_id }) {
+    restoreTrash({ commit }, { msg_id }) {
       return new Promise((resolve, reject) => {
         restoreTrash(msg_id)
           .then(() => {

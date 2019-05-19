@@ -154,7 +154,8 @@ export default [
     name: 'users',
     meta: {
       icon: 'logo-buffer',
-      title: '人员管理'
+      title: '人员管理',
+      access: ['view_user']
     },
     component: Main,
     children: [
