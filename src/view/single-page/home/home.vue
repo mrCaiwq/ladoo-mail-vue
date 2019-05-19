@@ -63,7 +63,7 @@ export default {
     ChartBar,
     LineChart
   },
-  data () {
+  data() {
     return {
       mailCountStat: {
         mailCountToday: 0,
@@ -107,7 +107,7 @@ export default {
   },
 
   computed: {
-    inforCardData () {
+    inforCardData() {
       return [
         {
           title: '今日发送',
@@ -137,7 +137,7 @@ export default {
     }
   },
 
-  beforeMount () {
+  beforeMount() {
     this.fetchMailCountStat()
 
     this.fetchMailGroupStat({
@@ -163,7 +163,7 @@ export default {
   },
 
   methods: {
-    fetchMailCountStat () {
+    fetchMailCountStat() {
       getMailCount().then(res => {
         this.mailCountStat = Object.assign({},
           {
@@ -176,13 +176,13 @@ export default {
       })
     },
 
-    fetchMailGroupStat (params) {
+    fetchMailGroupStat(params) {
       getMailGroup(params).then(res => {
         this.importToChartData(params.period, res.data.data)
       })
     },
 
-    importToChartData (period, resBody) {
+    importToChartData(period, resBody) {
       let categories = Object.keys(resBody.send_group)
       let series = []
       for (var property in resBody) {

@@ -7,7 +7,7 @@
           :allow-duplicates="true"
           validate="email"
           placeholder="请输入收件人邮箱"
-          />
+        />
       </FormItem>
 
       <div class="group-and-btn">
@@ -34,9 +34,7 @@
       </FormItem>
 
       <FormItem prop="content">
-        <vue-ckeditor
-        v-model="formItem.content"
-        :config="editorConfig"/>
+        <vue-ckeditor v-model="formItem.content" :config="editorConfig"/>
       </FormItem>
       <FormItem>
         <Button type="primary" @click="handleSubmit">提交</Button>
@@ -63,7 +61,7 @@ export default {
     SelectContactModal,
     VueCkeditor
   },
-  data () {
+  data() {
     return {
       editorConfig: {
         height: 500
@@ -97,15 +95,15 @@ export default {
   },
 
   computed: {
-    groupNames () {
+    groupNames() {
       return this.groups.map(group => group.name).join(', ')
     }
   },
   methods: {
-    onClickSelectContact () {
+    onClickSelectContact() {
       this.isContactModalVisible = true
     },
-    handleSubmit () {
+    handleSubmit() {
       this.$refs['emailForm'].validate(valid => {
         if (!valid) {
           this.$Message.error('请正确地填写邮件')
@@ -115,13 +113,13 @@ export default {
       })
     },
 
-    createEmail () {
+    createEmail() {
       batchCreate(this.formItem).then(res => {
         this.$Message.success('成功发送邮件')
       })
     },
 
-    beforeUpload (file) {
+    beforeUpload(file) {
       getArrayFromFile(file)
         .then(data => {
           let { tableData } = getTableDataFromArray(data)
@@ -137,7 +135,7 @@ export default {
       return false
     },
 
-    handleReset () {
+    handleReset() {
       this.formItem = {
         recipients: [],
         sender: '',
@@ -147,11 +145,14 @@ export default {
       }
     },
 
-    onSubmitSelection (groups, contactEmails) {
+    onSubmitSelection(groups, contactEmails) {
       this.groups = _.unionBy(this.groups, groups, 'id')
       let groupIds = groups.map(group => group.id)
       this.formItem.group_ids = _.union(this.formItem.group_ids, groupIds)
-      this.formItem.recipients = _.union(this.formItem.recipients, contactEmails)
+      this.formItem.recipients = _.union(
+        this.formItem.recipients,
+        contactEmails
+      )
     }
   }
 }

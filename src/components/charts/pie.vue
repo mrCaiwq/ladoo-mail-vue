@@ -14,17 +14,17 @@ export default {
     text: String,
     subtext: String
   },
-  data () {
+  data() {
     return {
       dom: null
     }
   },
   methods: {
-    resize () {
+    resize() {
       this.dom.resize()
     }
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       let legend = this.value.map(_ => _.name)
       let option = {
@@ -63,7 +63,7 @@ export default {
       on(window, 'resize', this.resize)
     })
   },
-  beforeDestroy () {
+  beforeDestroy() {
     off(window, 'resize', this.resize)
   }
 }

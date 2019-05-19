@@ -32,13 +32,13 @@ export default {
     }
   },
   methods: {
-    showTitle (item) {
+    showTitle(item) {
       return showTitle(item, this)
     },
-    isCustomIcon (iconName) {
+    isCustomIcon(iconName) {
       return iconName.indexOf('_') === 0
     },
-    getCustomIconName (iconName) {
+    getCustomIconName(iconName) {
       return iconName.slice(1)
     }
   }

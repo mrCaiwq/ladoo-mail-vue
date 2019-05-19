@@ -39,17 +39,17 @@ export default {
       default: () => ({})
     }
   },
-  data () {
+  data() {
     return {
       options: { group: 'drag_list' }
     }
   },
   methods: {
-    handleListChange (value, type) {
+    handleListChange(value, type) {
       if (type === 'left') this.$emit('update:list1', value)
       else this.$emit('update:list2', value)
     },
-    handleEnd (event, type) {
+    handleEnd(event, type) {
       const srcClassName = (event.srcElement || event.target).classList[0]
       const targetClassName = event.to.classList[0]
       let src = ''

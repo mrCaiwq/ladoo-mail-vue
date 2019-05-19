@@ -15,7 +15,7 @@ export default {
   components: {
     Tables
   },
-  data () {
+  data() {
     return {
       columns: [
         { title: 'Name', key: 'name', sortable: true },
@@ -49,16 +49,16 @@ export default {
     }
   },
   methods: {
-    handleDelete (params) {
+    handleDelete(params) {
       console.log(params)
     },
-    exportExcel () {
+    exportExcel() {
       this.$refs.tables.exportCsv({
         filename: `table-${(new Date()).valueOf()}.csv`
       })
     }
   },
-  mounted () {
+  mounted() {
     getTableData().then(res => {
       this.tableData = res.data
     })

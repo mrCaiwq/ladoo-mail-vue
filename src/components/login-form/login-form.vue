@@ -36,7 +36,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       form: {
         userName: null,
@@ -45,7 +45,7 @@ export default {
     }
   },
   computed: {
-    rules () {
+    rules() {
       return {
         userName: this.userNameRules,
         password: this.passwordRules
@@ -53,7 +53,7 @@ export default {
     }
   },
   methods: {
-    handleSubmit () {
+    handleSubmit() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.$emit('on-success-valid', {

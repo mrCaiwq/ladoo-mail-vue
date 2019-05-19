@@ -92,7 +92,7 @@ export default {
      */
     unit: {
       type: Array,
-      default () {
+      default() {
         return [[3, 'K+'], [6, 'M+'], [9, 'B+']]
       }
     },
@@ -105,25 +105,25 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       counter: null,
       unitText: ''
     }
   },
   computed: {
-    counterId () {
+    counterId() {
       return `count_to_${this._uid}`
     }
   },
   methods: {
-    getHandleVal (val, len) {
+    getHandleVal(val, len) {
       return {
         endVal: parseInt(val / Math.pow(10, this.unit[len - 1][0])),
         unitText: this.unit[len - 1][1]
       }
     },
-    transformValue (val) {
+    transformValue(val) {
       let len = this.unit.length
       let res = {
         endVal: 0,
@@ -138,7 +138,7 @@ export default {
       if (val > Math.pow(10, this.unit[len - 1][0])) res = this.getHandleVal(val, len)
       return res
     },
-    getValue (val) {
+    getValue(val) {
       let res = 0
       if (this.simplify) {
         let { endVal, unitText } = this.transformValue(val)
@@ -150,7 +150,7 @@ export default {
       return res
     }
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       let endVal = this.getValue(this.end)
       this.counter = new CountUp(this.counterId, this.startVal, endVal, this.decimals, this.duration, {
@@ -165,7 +165,7 @@ export default {
     })
   },
   watch: {
-    end (newVal) {
+    end(newVal) {
       let endVal = this.getValue(newVal)
       this.counter.update(endVal)
     }

@@ -60,7 +60,7 @@ export default {
   components: {
     DragDrawer
   },
-  data () {
+  data() {
     return {
       showWindowBDrawer: false,
       showContainerBDrawer: false,
@@ -72,12 +72,12 @@ export default {
     }
   },
   computed: {
-    placementComputed () {
+    placementComputed() {
       return this.placement ? 'left' : 'right'
     }
   },
   methods: {
-    handleResize (event) {
+    handleResize(event) {
       const { atMin } = event
       /* eslint-disable */
       console.log(atMin);

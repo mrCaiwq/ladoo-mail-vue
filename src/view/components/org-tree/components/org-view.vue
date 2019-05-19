@@ -47,7 +47,7 @@ export default {
     },
     data: Object
   },
-  data () {
+  data() {
     return {
       currentContextMenuId: '',
       orgTreeOffsetLeft: 0,
@@ -60,7 +60,7 @@ export default {
     }
   },
   computed: {
-    orgTreeStyle () {
+    orgTreeStyle() {
       return {
         transform: `translate(-50%, -50%) scale(${this.zoomHandled}, ${
           this.zoomHandled
@@ -71,20 +71,20 @@ export default {
     }
   },
   methods: {
-    handleNodeClick (e, data, expand) {
+    handleNodeClick(e, data, expand) {
       expand()
     },
-    closeMenu () {
+    closeMenu() {
       this.currentContextMenuId = ''
     },
-    getBgColor (data) {
+    getBgColor(data) {
       return this.currentContextMenuId === data.id
         ? data.isRoot
           ? '#0d7fe8'
           : '#5d6c7b'
         : ''
     },
-    nodeRender (h, data) {
+    nodeRender(h, data) {
       return (
         <div
           class={[
@@ -118,18 +118,18 @@ export default {
         </div>
       )
     },
-    contextmenu (data, $event) {
+    contextmenu(data, $event) {
       let event = $event || window.event
       event.preventDefault
         ? event.preventDefault()
         : (event.returnValue = false)
       this.currentContextMenuId = data.id
     },
-    setDepartmentData (data) {
+    setDepartmentData(data) {
       data.isRoot = true
       this.departmentData = data
     },
-    mousedownView (event) {
+    mousedownView(event) {
       this.canMove = true
       this.initPageX = event.pageX
       this.initPageY = event.pageY
@@ -138,31 +138,31 @@ export default {
       on(document, 'mousemove', this.mousemoveView)
       on(document, 'mouseup', this.mouseupView)
     },
-    mousemoveView (event) {
+    mousemoveView(event) {
       if (!this.canMove) return
       const { pageX, pageY } = event
       this.orgTreeOffsetLeft = this.oldMarginLeft + pageX - this.initPageX
       this.orgTreeOffsetTop = this.oldMarginTop + pageY - this.initPageY
     },
-    mouseupView () {
+    mouseupView() {
       this.canMove = false
       off(document, 'mousemove', this.mousemoveView)
       off(document, 'mouseup', this.mouseupView)
     },
-    handleDropdownClick (event) {
+    handleDropdownClick(event) {
       event.stopPropagation()
     },
-    handleDocumentContextmenu () {
+    handleDocumentContextmenu() {
       this.canMove = false
     },
-    handleContextMenuClick (data, key) {
+    handleContextMenuClick(data, key) {
       this.$emit('on-menu-click', { data, key })
     }
   },
-  mounted () {
+  mounted() {
     on(document, 'contextmenu', this.handleDocumentContextmenu)
   },
-  beforeDestroy () {
+  beforeDestroy() {
     off(document, 'contextmenu', this.handleDocumentContextmenu)
   }
 }

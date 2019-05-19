@@ -79,7 +79,7 @@ import { getGroupList } from '@/api/group'
 
 export default {
   name: 'ContactList',
-  data () {
+  data() {
     return {
       isModalVisible: false,
       contactColumns: [
@@ -137,38 +137,38 @@ export default {
   },
 
   computed: {
-    isCreate () {
+    isCreate() {
       return typeof this.contactForm.id === 'undefined' || this.contactForm.id === null
     },
-    formTitle () {
+    formTitle() {
       return this.isCreate ? '创建联系人' : '修改联系人'
     },
-    formSubmitText () {
+    formSubmitText() {
       return this.isCreate ? '创建' : '修改'
     }
   },
 
-  beforeMount () {
+  beforeMount() {
     this.fetchContacts()
     this.fetchGroups()
   },
 
   watch: {
-    isModalVisible (visible, _) {
+    isModalVisible(visible, _) {
       if (!visible) { this.contactForm = {} }
     }
   },
 
   methods: {
-    fetchGroups () {
+    fetchGroups() {
       getGroupList({ per_page: 100 }).then(res => { this.groups = res.data.data })
     },
 
-    showContactModal () {
+    showContactModal() {
       this.isModalVisible = true
     },
 
-    fetchContacts () {
+    fetchContacts() {
       let param = {
         page: this.page,
         per_page: this.perPage,
@@ -182,12 +182,12 @@ export default {
       })
     },
 
-    changePage (page) {
+    changePage(page) {
       this.page = page
       this.fetchContacts()
     },
 
-    submitForm () {
+    submitForm() {
       this.$refs['contactForm'].validate(valid => {
         if (!valid) return
 
@@ -199,7 +199,7 @@ export default {
       })
     },
 
-    createContact () {
+    createContact() {
       createContact(this.contactForm).then(res => {
         this.$Message.success('创建成功')
         this.fetchContacts()
@@ -207,7 +207,7 @@ export default {
       })
     },
 
-    updateContact () {
+    updateContact() {
       updateContact(this.contactForm).then(res => {
         this.$Message.success('修改成功')
         this.fetchContacts()
@@ -215,16 +215,16 @@ export default {
       })
     },
 
-    hideModal () {
+    hideModal() {
       this.isModalVisible = false
     },
 
-    showUpdateModal (contact) {
+    showUpdateModal(contact) {
       this.contactForm = Object.assign({}, contact)
       this.isModalVisible = true
     },
 
-    remove (contact) {
+    remove(contact) {
       this.$Modal.confirm({
         loading: true,
         title: '确认要删除该联系人吗？',
@@ -238,7 +238,7 @@ export default {
       })
     },
 
-    importContact (file) {
+    importContact(file) {
       importContact(file).then(res => {
         this.$Message.success('上传成功')
         this.fetchGroups()

@@ -21,12 +21,12 @@ export default {
     collapsed: Boolean
   },
   computed: {
-    breadCrumbList () {
+    breadCrumbList() {
       return this.$store.state.app.breadCrumbList
     }
   },
   methods: {
-    handleCollpasedChange (state) {
+    handleCollpasedChange(state) {
       this.$emit('on-coll-change', state)
     }
   }

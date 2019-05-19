@@ -24,13 +24,13 @@ export default {
   components: {
     Cropper
   },
-  data () {
+  data() {
     return {
       exampleImageSrc: ''
     }
   },
   methods: {
-    handleCroped (blob) {
+    handleCroped(blob) {
       const formData = new FormData()
       formData.append('croppedImg', blob)
       uploadImg(formData).then(() => {

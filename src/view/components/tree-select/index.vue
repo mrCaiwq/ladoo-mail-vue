@@ -26,39 +26,39 @@ export default {
   components: {
     TreeSelect
   },
-  data () {
+  data() {
     return {
       treeSelected: [112, 113],
       treeData: []
     }
   },
-  mounted () {
+  mounted() {
     getTreeSelectData().then(res => {
       const { data } = res
       this.treeData = data
     })
   },
   methods: {
-    changeTreeSelectData () {
+    changeTreeSelectData() {
       this.treeSelected = [111, 114]
     },
-    changeTreeData () {
+    changeTreeData() {
       this.treeData = newTreeData
       // this.treeSelected = [];
     },
-    handleTreeSelectChange (list) {
+    handleTreeSelectChange(list) {
       // console.log('=-========', list);
     },
-    handleTreeSelectExpand (item) {
+    handleTreeSelectExpand(item) {
       // console.log('toggle expand', item);
     },
-    handleTreeSelectCheckChange (selectedArray, item) {
+    handleTreeSelectCheckChange(selectedArray, item) {
       // console.log(selectedArray, item);
     },
-    handleTreeSelectClick (selectArray, item) {
+    handleTreeSelectClick(selectArray, item) {
       // console.log(selectArray, item);
     },
-    loadData (item, callback) {
+    loadData(item, callback) {
       setTimeout(() => {
         let data = [
           {

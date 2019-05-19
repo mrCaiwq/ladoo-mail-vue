@@ -38,7 +38,7 @@
 import { createGroup, getGroupList, updateGroup, deleteGroup } from '@/api/group'
 
 export default {
-  data () {
+  data() {
     return {
       visibleModal: false,
       groupColumns: [
@@ -73,16 +73,16 @@ export default {
     }
   },
 
-  beforeMount () {
+  beforeMount() {
     this.fetchGroups()
   },
 
   methods: {
-    showGroupModal () {
+    showGroupModal() {
       this.visibleModal = true
     },
 
-    fetchGroups () {
+    fetchGroups() {
       let param = {
         page: this.page,
         per_page: this.perPage
@@ -94,12 +94,12 @@ export default {
       })
     },
 
-    changePage (page) {
+    changePage(page) {
       this.page = page
       this.fetchGroups()
     },
 
-    submitForm () {
+    submitForm() {
       this.$refs['groupForm'].validate((valid) => {
         if (!valid) return
 
@@ -111,7 +111,7 @@ export default {
       })
     },
 
-    createGroup () {
+    createGroup() {
       createGroup(this.groupForm).then(res => {
         this.$Message.success('创建成功')
         this.visibleModal = false
@@ -119,7 +119,7 @@ export default {
       })
     },
 
-    updateGroup () {
+    updateGroup() {
       updateGroup(this.groupForm).then(res => {
         this.$Message.success('修改成功')
         this.visibleModal = false
@@ -127,12 +127,12 @@ export default {
       })
     },
 
-    showUpdateModal (group) {
+    showUpdateModal(group) {
       this.groupForm = Object.assign({}, group)
       this.visibleModal = true
     },
 
-    remove (group) {
+    remove(group) {
       this.$Modal.confirm({
         loading: true,
         title: '确认要删除该分组吗？',

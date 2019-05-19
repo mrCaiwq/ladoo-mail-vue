@@ -7,13 +7,13 @@
 export default {
   name: 'ParentView',
   computed: {
-    tagNavList () {
+    tagNavList() {
       return this.$store.state.app.tagNavList
     },
-    notCacheName () {
+    notCacheName() {
       return [(this.$route.meta && this.$route.meta.notCache) ? this.$route.name : '']
     },
-    cacheList () {
+    cacheList() {
       return ['ParentView', ...this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []]
     }
   }

@@ -76,7 +76,7 @@ export default {
       default: 256
     }
   },
-  data () {
+  data() {
     return {
       canMove: false,
       wrapperWidth: 0,
@@ -84,21 +84,21 @@ export default {
     }
   },
   computed: {
-    outerClasses () {
+    outerClasses() {
       const classesArray = [
         `${this.prefix}-wrapper`,
         this.canMove ? 'no-select pointer-events-none' : ''
       ]
       return classesArray.join(' ')
     },
-    placement () {
+    placement() {
       return this.$attrs.placement
     },
-    innerWidth () {
+    innerWidth() {
       const width = this.width
       return width <= 100 ? (this.wrapperWidth * width) / 100 : width
     },
-    triggerStyle () {
+    triggerStyle() {
       return {
         [this.placement]: `${this.innerWidth}px`,
         position: this.$attrs.inner ? 'absolute' : 'fixed'
@@ -106,16 +106,16 @@ export default {
     }
   },
   methods: {
-    handleInput (status) {
+    handleInput(status) {
       this.$emit('input', status)
     },
-    handleTriggerMousedown (event) {
+    handleTriggerMousedown(event) {
       this.canMove = true
       this.$emit('on-resize-start')
       // 防止鼠标选中抽屉中文字，造成拖动trigger触发浏览器原生拖动行为
       window.getSelection().removeAllRanges()
     },
-    handleMousemove (event) {
+    handleMousemove(event) {
       if (!this.canMove) return
       // 更新容器宽度和距离左侧页面距离，如果是window则距左侧距离为0
       this.setWrapperWidth()
@@ -130,11 +130,11 @@ export default {
       this.$emit('update:width', parseInt(width))
       this.$emit('on-resize', event)
     },
-    handleMouseup (event) {
+    handleMouseup(event) {
       this.canMove = false
       this.$emit('on-resize-end')
     },
-    setWrapperWidth () {
+    setWrapperWidth() {
       const {
         width,
         left
@@ -143,12 +143,12 @@ export default {
       this.wrapperLeft = left
     }
   },
-  mounted () {
+  mounted() {
     on(document, 'mousemove', this.handleMousemove)
     on(document, 'mouseup', this.handleMouseup)
     this.setWrapperWidth()
   },
-  beforeDestroy () {
+  beforeDestroy() {
     off(document, 'mousemove', this.handleMousemove)
     off(document, 'mouseup', this.handleMouseup)
   }

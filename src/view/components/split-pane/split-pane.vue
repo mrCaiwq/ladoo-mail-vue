@@ -24,14 +24,14 @@ export default {
     SplitPane,
     Icons
   },
-  data () {
+  data() {
     return {
       offset: 0.6,
       offsetVertical: '250px'
     }
   },
   methods: {
-    handleMoving (e) {
+    handleMoving(e) {
       console.log(e.atMin, e.atMax)
     }
   }

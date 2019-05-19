@@ -16,7 +16,7 @@
 <script>
 export default {
   name: 'tree_table_page',
-  data () {
+  data() {
     return {
       columns: [
         {
@@ -182,7 +182,7 @@ export default {
     }
   },
   methods: {
-    handle (scope) {
+    handle(scope) {
       console.log(scope)
     }
   }

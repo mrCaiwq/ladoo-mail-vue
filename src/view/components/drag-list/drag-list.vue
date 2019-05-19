@@ -35,7 +35,7 @@ export default {
   components: {
     DragList
   },
-  data () {
+  data() {
     return {
       list1: [],
       list2: [],
@@ -47,11 +47,11 @@ export default {
     }
   },
   methods: {
-    handleChange ({ src, target, oldIndex, newIndex }) {
+    handleChange({ src, target, oldIndex, newIndex }) {
       this.handleList.push(`${src} => ${target}, ${oldIndex} => ${newIndex}`)
     }
   },
-  mounted () {
+  mounted() {
     getDragList().then(res => {
       this.list1 = res.data
       this.list2 = [res.data[0]]

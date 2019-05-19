@@ -22,21 +22,21 @@ export default {
     editable: Boolean
   },
   computed: {
-    isEditting () {
+    isEditting() {
       return this.edittingCellId === `editting-${this.params.index}-${this.params.column.key}`
     }
   },
   methods: {
-    handleInput (val) {
+    handleInput(val) {
       this.$emit('input', val)
     },
-    startEdit () {
+    startEdit() {
       this.$emit('on-start-edit', this.params)
     },
-    saveEdit () {
+    saveEdit() {
       this.$emit('on-save-edit', this.params)
     },
-    canceltEdit () {
+    canceltEdit() {
       this.$emit('on-cancel-edit', this.params)
     }
   }

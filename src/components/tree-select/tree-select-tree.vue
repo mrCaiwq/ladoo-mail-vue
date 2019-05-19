@@ -41,7 +41,7 @@ export default {
     },
     loadData: Function
   },
-  data () {
+  data() {
     return {
       flatDic: {},
       checkedArray: []
@@ -49,12 +49,12 @@ export default {
   },
   inject: ['parent'],
   computed: {
-    expandAll () {
+    expandAll() {
       return this.parent.$attrs['expand-all']
     }
   },
   watch: {
-    data (newData, oldVal) {
+    data(newData, oldVal) {
       this.updateFlagDic(newData)
       let selectArray = []
       this.selectedArray.forEach(id => {
@@ -63,7 +63,7 @@ export default {
       this.$emit('on-check', selectArray.map(id => this.flatDic[id]))
       if (this.expandAll) this.checkData(newData, false, true)
     },
-    selectedArray (newVal, oldVal) {
+    selectedArray(newVal, oldVal) {
       if (arrayEqual(newVal, oldVal)) return
       const filtedNewVal = newVal.filter(id => id in this.flatDic)
       this.$emit('on-check', filtedNewVal.map(id => this.flatDic[id]))
@@ -74,7 +74,7 @@ export default {
     }
   },
   methods: {
-    checkEmit (value, label) {
+    checkEmit(value, label) {
       this.dispatch('iSelect', 'on-select-selected', {
         value,
         label
@@ -84,14 +84,14 @@ export default {
         label
       })
     },
-    updateFlagDic (newData) {
+    updateFlagDic(newData) {
       let newFlagDic = {}
       this.setFlagDic(newData, item => {
         newFlagDic[item.id] = item
       })
       this.flatDic = newFlagDic
     },
-    setFlagDic (data, callback) {
+    setFlagDic(data, callback) {
       data.forEach(item => {
         if (item.children && item.children.length) {
           this.setFlagDic(item.children, callback)
@@ -99,11 +99,11 @@ export default {
         callback(item)
       })
     },
-    handleCheckSelect (selectArray, selectItem) {
+    handleCheckSelect(selectArray, selectItem) {
       this.$emit('on-check', selectArray)
       this.parent.$emit('on-change', selectArray)
     },
-    checkData (data, emit, expandAll) {
+    checkData(data, emit, expandAll) {
       data.forEach(item => {
         if (this.selectedArray.includes(item.id)) {
           this.$set(item, 'checked', true)
@@ -116,7 +116,7 @@ export default {
         }
       })
     },
-    loadDataCallback (item, callback) {
+    loadDataCallback(item, callback) {
       this.loadData(item, data => {
         return (() => {
           callback(data)
@@ -125,7 +125,7 @@ export default {
       })
     }
   },
-  mounted () {
+  mounted() {
     this.checkData(this.data, false, true)
     this.$nextTick(() => {
       this.$emit('on-check', this.checkedArray)

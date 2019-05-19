@@ -38,7 +38,7 @@ export default {
     Icons,
     CommonIcon
   },
-  data () {
+  data() {
     return {
       customIconList: [
         'woman',

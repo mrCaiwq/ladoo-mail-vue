@@ -43,10 +43,10 @@ export default {
     }
   },
   computed: {
-    leftWidth () {
+    leftWidth() {
       return `${this.left}%`
     },
-    rightWidth () {
+    rightWidth() {
       return `${100 - this.left}%`
     }
   }

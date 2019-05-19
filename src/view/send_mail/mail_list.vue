@@ -60,7 +60,7 @@ import { getStateTagColor } from '@/libs/tag'
 import _ from 'lodash'
 
 export default {
-  data () {
+  data() {
     return {
       mailColumns: [
         {
@@ -123,7 +123,7 @@ export default {
     }
   },
 
-  beforeMount () {
+  beforeMount() {
     this.setSearchFormByQuery()
     this.fetchEmails()
   },
@@ -133,12 +133,12 @@ export default {
     formatTime,
     getStateTagColor,
 
-    setSearchFormByQuery () {
+    setSearchFormByQuery() {
       let { batch_email_id } = this.$route.query
       this.searchForm.batch_email_id = batch_email_id
     },
 
-    onClickSearch () {
+    onClickSearch() {
       let query = { batch_email_id: this.searchForm.batch_email_id }
       query = _.omitBy(query, _.isEmpty)
       this.$router.push({ name: 'mails', query: query })
@@ -146,7 +146,7 @@ export default {
       this.fetchEmails()
     },
 
-    fetchEmails () {
+    fetchEmails() {
       let param = {
         page: this.page,
         per_page: this.perPage,
@@ -159,12 +159,12 @@ export default {
       })
     },
 
-    changePage (page) {
+    changePage(page) {
       this.page = page
       this.fetchEmails()
     },
 
-    filterByState (states) {
+    filterByState(states) {
       this.searchForm.state = states[0]
       this.fetchEmails()
     }

@@ -10,7 +10,7 @@ export default {
   components: {
     errorContent
   },
-  data () {
+  data() {
     return {
       src: error404
     }

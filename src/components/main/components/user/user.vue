@@ -34,19 +34,19 @@ export default {
     ...mapActions([
       'handleLogOut'
     ]),
-    logout () {
+    logout() {
       this.handleLogOut().then(() => {
         this.$router.push({
           name: 'login'
         })
       })
     },
-    message () {
+    message() {
       this.$router.push({
         name: 'message_page'
       })
     },
-    handleClick (name) {
+    handleClick(name) {
       switch (name) {
         case 'logout': this.logout()
           break

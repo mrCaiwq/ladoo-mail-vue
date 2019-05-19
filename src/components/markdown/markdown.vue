@@ -25,13 +25,13 @@ export default {
       default: true
     }
   },
-  data () {
+  data() {
     return {
       editor: null
     }
   },
   methods: {
-    addEvents () {
+    addEvents() {
       this.editor.codemirror.on('change', () => {
         let value = this.editor.value()
         if (this.localCache) localStorage.markdownContent = value
@@ -46,7 +46,7 @@ export default {
       })
     }
   },
-  mounted () {
+  mounted() {
     this.editor = new Simplemde(Object.assign(this.options, {
       element: this.$refs.editor
     }))

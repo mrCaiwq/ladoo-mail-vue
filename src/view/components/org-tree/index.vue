@@ -37,36 +37,36 @@ export default {
     OrgView,
     ZoomController
   },
-  data () {
+  data() {
     return {
       data: null,
       zoom: 100
     }
   },
   computed: {
-    zoomHandled () {
+    zoomHandled() {
       return this.zoom / 100
     }
   },
   methods: {
-    setDepartmentData (data) {
+    setDepartmentData(data) {
       data.isRoot = true
       return data
     },
-    handleMenuClick ({ data, key }) {
+    handleMenuClick({ data, key }) {
       this.$Message.success({
         duration: 5,
         content: `点击了《${data.label}》节点的'${menuDic[key]}'菜单`
       })
     },
-    getDepartmentData () {
+    getDepartmentData() {
       getOrgData().then(res => {
         const { data } = res
         this.data = data
       })
     }
   },
-  mounted () {
+  mounted() {
     this.getDepartmentData()
   }
 }

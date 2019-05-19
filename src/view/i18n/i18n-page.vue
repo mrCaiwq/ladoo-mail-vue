@@ -25,13 +25,13 @@
 <script>
 export default {
   name: 'i18n_page',
-  data () {
+  data() {
     return {
       modalVisible: false
     }
   },
   computed: {
-    content () {
+    content() {
       return this.$t('content')
     }
   }

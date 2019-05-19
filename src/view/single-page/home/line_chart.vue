@@ -16,16 +16,16 @@ export default {
       type: Array
     }
   },
-  data () {
+  data() {
     return {
       dom: null
     }
   },
   methods: {
-    resize () {
+    resize() {
       this.dom.resize()
     },
-    setupChart () {
+    setupChart() {
       const option = {
         tooltip: {
           trigger: 'axis',
@@ -67,15 +67,15 @@ export default {
       })
     }
   },
-  mounted () {
+  mounted() {
     this.setupChart()
   },
   watch: {
-    categories () {
+    categories() {
       this.setupChart()
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     off(window, 'resize', this.resize)
   }
 }

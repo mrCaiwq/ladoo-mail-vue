@@ -146,7 +146,7 @@ export default {
   components: {
     CountTo
   },
-  data () {
+  data() {
     return {
       end: 0,
       unit: [[3, '千多'], [4, '万多'], [5, '十万多']],
@@ -156,14 +156,14 @@ export default {
     }
   },
   methods: {
-    init () {
+    init() {
       setInterval(() => {
         this.asynEndVal += parseInt(Math.random() * 20)
         this.integratedEndVal += parseInt(Math.random() * 30)
       }, 2000)
     }
   },
-  mounted () {
+  mounted() {
     this.init()
   }
 }

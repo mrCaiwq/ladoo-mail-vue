@@ -39,7 +39,6 @@
             </p>
 
             <Scroll :on-reach-bottom="handleReachBottom" height="400">
-
               <CheckboxGroup v-model="selectedContactIds" @on-change="onContactListChange">
                 <Checkbox
                   class="select-item contact-item"
@@ -80,7 +79,7 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       visible: false,
       searchText: null,
@@ -98,33 +97,32 @@ export default {
   },
 
   computed: {
-    selectedContactSize () {
+    selectedContactSize() {
       return this.selectedContactIds.length
     },
 
-    selectedGroupSize () {
+    selectedGroupSize() {
       return this.selectedGroups.length
     },
 
-    selectedGroups () {
+    selectedGroups() {
       return this.groups.filter(group => group.selected)
     },
 
-    selectedGroupIds () {
+    selectedGroupIds() {
       return this.selectedGroups.map(group => group.id)
     },
 
-    isFetchBySearch () {
+    isFetchBySearch() {
       return this.fetchContactType === FETCH_BY_SEARCH
     },
 
-    isFetchByGroup () {
+    isFetchByGroup() {
       return this.fetchContactType === FETCH_BY_GROUP
     }
-
   },
 
-  beforeMount () {
+  beforeMount() {
     getGroupList({ per_page: 1000 }).then(res => {
       this.groups = res.data.data
 
@@ -137,21 +135,21 @@ export default {
   },
 
   watch: {
-    visible (newValue, _) {
+    visible(newValue, _) {
       this.$emit('input', newValue)
     },
-    value (newValue) {
+    value(newValue) {
       this.visible = newValue
     }
   },
 
   methods: {
-    getSelectedContacts () {
+    getSelectedContacts() {
       return this.contacts.filter(contact => {
         return this.selectedContactIds.includes(contact.id)
       })
     },
-    selectAllContact () {
+    selectAllContact() {
       if (this.contactIndeterminate) {
         this.isSelectAllContact = false
       } else {
@@ -166,7 +164,7 @@ export default {
       }
     },
 
-    onContactListChange (data) {
+    onContactListChange(data) {
       if (data.length === this.contacts.length) {
         this.contactIndeterminate = false
         this.isSelectAllContact = true
@@ -179,24 +177,24 @@ export default {
       }
     },
 
-    removeSelected () {
+    removeSelected() {
       this.selectedContactIds = []
       this.groups.forEach(group => {
         group.selected = false
       })
     },
 
-    removeUnselectedContacts () {
+    removeUnselectedContacts() {
       this.contacts = this.getSelectedContacts()
     },
 
-    onClickSearch () {
+    onClickSearch() {
       this.page = 1
       this.removeUnselectedContacts()
       this.searchContact()
     },
 
-    searchContact () {
+    searchContact() {
       this.fetchContactType = FETCH_BY_SEARCH
       return searchContact({ page: this.page, q: this.searchText }).then(
         res => {
@@ -206,14 +204,14 @@ export default {
       )
     },
 
-    onClickGroupLabel (id) {
+    onClickGroupLabel(id) {
       this.currentGroupId = id
       this.page = 1
       this.removeUnselectedContacts()
       this.fetchContactsByGroup()
     },
 
-    fetchContactsByGroup () {
+    fetchContactsByGroup() {
       this.fetchContactType = FETCH_BY_GROUP
       return getContactList({
         page: this.page,
@@ -223,7 +221,7 @@ export default {
       })
     },
 
-    fillContacts (contacts) {
+    fillContacts(contacts) {
       if (contacts.length <= 0) return
 
       if (this.page === 1) {
@@ -233,7 +231,7 @@ export default {
       }
     },
 
-    handleReachBottom () {
+    handleReachBottom() {
       this.page += 1
       if (this.isFetchBySearch) {
         return this.searchContact()
@@ -242,8 +240,10 @@ export default {
       }
     },
 
-    submitSelection () {
-      let contactEmails = this.getSelectedContacts().map(contact => contact.email)
+    submitSelection() {
+      let contactEmails = this.getSelectedContacts().map(
+        contact => contact.email
+      )
       this.$emit('on-submit-selection', this.selectedGroups, contactEmails)
 
       this.visible = false

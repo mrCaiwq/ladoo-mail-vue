@@ -22,12 +22,12 @@ export default {
     }
   },
   computed: {
-    countComputed () {
+    countComputed() {
       return this.hasRead ? 0 : this.count
     }
   },
   methods: {
-    openErrorLoggerPage () {
+    openErrorLoggerPage() {
       this.$router.push({
         name: 'error_logger_page'
       })

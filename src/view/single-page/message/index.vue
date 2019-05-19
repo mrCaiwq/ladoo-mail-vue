@@ -61,7 +61,7 @@ const listDic = {
 }
 export default {
   name: 'message_page',
-  data () {
+  data() {
     return {
       listLoading: true,
       contentLoading: false,
@@ -75,10 +75,10 @@ export default {
       messageUnreadList: state => state.user.messageUnreadList,
       messageReadedList: state => state.user.messageReadedList,
       messageTrashList: state => state.user.messageTrashList,
-      messageList () {
+      messageList() {
         return this[listDic[this.currentMessageType]]
       },
-      titleClass () {
+      titleClass() {
         return {
           'not-unread-list': this.currentMessageType !== 'unread'
         }
@@ -101,13 +101,13 @@ export default {
       'removeReaded',
       'restoreTrash'
     ]),
-    stopLoading (name) {
+    stopLoading(name) {
       this[name] = false
     },
-    handleSelect (name) {
+    handleSelect(name) {
       this.currentMessageType = name
     },
-    handleView (msg_id) {
+    handleView(msg_id) {
       this.contentLoading = true
       this.getContentByMsgId({ msg_id }).then(content => {
         this.messageContent = content
@@ -119,14 +119,14 @@ export default {
         this.stopLoading('contentLoading')
       })
     },
-    removeMsg (item) {
+    removeMsg(item) {
       item.loading = true
       const msg_id = item.msg_id
       if (this.currentMessageType === 'readed') this.removeReaded({ msg_id })
       else this.restoreTrash({ msg_id })
     }
   },
-  mounted () {
+  mounted() {
     this.listLoading = true
     // 请求获取消息列表
     this.getMessageList().then(() => this.stopLoading('listLoading')).catch(() => this.stopLoading('listLoading'))

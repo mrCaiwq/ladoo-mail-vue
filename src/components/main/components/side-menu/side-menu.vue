@@ -39,7 +39,7 @@ export default {
   props: {
     menuList: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
@@ -68,43 +68,43 @@ export default {
       default: () => []
     }
   },
-  data () {
+  data() {
     return {
       openedNames: []
     }
   },
   methods: {
-    handleSelect (name) {
+    handleSelect(name) {
       this.$emit('on-select', name)
     },
-    getOpenedNamesByActiveName (name) {
+    getOpenedNamesByActiveName(name) {
       return this.$route.matched.map(item => item.name).filter(item => item !== name)
     },
-    updateOpenName (name) {
+    updateOpenName(name) {
       if (name === this.$config.homeName) this.openedNames = []
       else this.openedNames = this.getOpenedNamesByActiveName(name)
     }
   },
   computed: {
-    textColor () {
+    textColor() {
       return this.theme === 'dark' ? '#fff' : '#495060'
     }
   },
   watch: {
-    activeName (name) {
+    activeName(name) {
       if (this.accordion) this.openedNames = this.getOpenedNamesByActiveName(name)
       else this.openedNames = getUnion(this.openedNames, this.getOpenedNamesByActiveName(name))
     },
-    openNames (newNames) {
+    openNames(newNames) {
       this.openedNames = newNames
     },
-    openedNames () {
+    openedNames() {
       this.$nextTick(() => {
         this.$refs.menu.updateOpened()
       })
     }
   },
-  mounted () {
+  mounted() {
     this.openedNames = getUnion(this.openedNames, this.getOpenedNamesByActiveName(name))
   }
 }

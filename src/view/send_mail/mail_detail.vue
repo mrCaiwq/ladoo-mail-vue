@@ -4,7 +4,7 @@
       <p class="subject">{{ email.subject }}</p>
       <Row class="subcontent">
         <Col span="12">
-          <p>发件人：{{ email.sender_name }} &lt;{{ email.sender_address }}&gt; </p>
+          <p>发件人：{{ email.sender_name }} &lt;{{ email.sender_address }}&gt;</p>
           <p>发送时间：{{ formatTime(email.created_at) }}</p>
           <p>收件人：{{ email.recipient_name }} &lt;{{ email.recipient_address }}&gt;</p>
         </Col>
@@ -48,20 +48,20 @@ import { getStateTagColor } from '@/libs/tag'
 import { getEmail } from '@/api/email'
 
 export default {
-  data () {
+  data() {
     return {
       email: {}
     }
   },
 
-  beforeMount () {
+  beforeMount() {
     this.getEmail()
   },
 
   methods: {
     formatTime,
     getStateTagColor,
-    getEmail () {
+    getEmail() {
       const id = this.$route.params.id
       getEmail(id).then(res => {
         this.email = res.data.data

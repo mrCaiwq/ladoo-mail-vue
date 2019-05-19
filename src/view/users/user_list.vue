@@ -4,7 +4,6 @@
       <Button type="primary" @click="onClickCreateUserBtn">创建员工</Button>
     </div>
     <Table :columns="userColumns" :data="userList">
-
       <template slot-scope="{ row }" slot="created_at">
         <span>{{ formatTime(row.created_at) }}</span>
       </template>
@@ -34,7 +33,7 @@
 
     <Modal v-model="isModalVisible" width="360">
       <p slot="header" class="modal-header">
-        <span> 创建员工 </span>
+        <span>创建员工</span>
       </p>
       <Form ref="userForm" :model="userForm" :rules="createUserFormRule" :label-width="80">
         <FormItem label="姓名" prop="name">
@@ -51,13 +50,13 @@
         </FormItem>
       </Form>
       <div slot="footer">
-        <Button type="primary" @click="onSubmitForm"> 创建 </Button>
+        <Button type="primary" @click="onSubmitForm">创建</Button>
       </div>
     </Modal>
 
     <Modal v-model="isUpdateModalVisible" width="360">
       <p slot="header" class="modal-header">
-        <span> 修改员工 </span>
+        <span>修改员工</span>
       </p>
       <Form ref="updateUserForm" :model="updateUserForm" :rules="userFormRule" :label-width="80">
         <FormItem label="姓名" prop="name">
@@ -74,7 +73,7 @@
         </FormItem>
       </Form>
       <div slot="footer">
-        <Button type="primary" @click="onSubmitUpdateForm"> 修改 </Button>
+        <Button type="primary" @click="onSubmitUpdateForm">修改</Button>
       </div>
     </Modal>
   </div>
@@ -86,7 +85,7 @@ import { formatTime } from '@/libs/time'
 import _ from 'lodash'
 
 export default {
-  data () {
+  data() {
     let userFormRule = {
       email: [
         { required: true, message: '邮箱不能为空', trigger: 'change' },
@@ -160,14 +159,14 @@ export default {
     }
   },
 
-  beforeMount () {
+  beforeMount() {
     this.fetchUsers()
   },
 
   methods: {
     formatTime,
 
-    fetchUsers () {
+    fetchUsers() {
       let param = {
         page: this.page,
         per_page: this.perPage
@@ -179,30 +178,30 @@ export default {
       })
     },
 
-    changePage (page) {
+    changePage(page) {
       this.page = page
       this.fetchUsers()
     },
 
-    onClickCreateUserBtn () {
+    onClickCreateUserBtn() {
       this.isModalVisible = true
     },
 
-    onSubmitForm () {
+    onSubmitForm() {
       this.$refs.userForm.validate(valid => {
         if (!valid) return
         this.createUser()
       })
     },
 
-    onSubmitUpdateForm () {
+    onSubmitUpdateForm() {
       this.$refs.updateUserForm.validate(valid => {
         if (!valid) return
         this.updateUser()
       })
     },
 
-    createUser () {
+    createUser() {
       createUser(this.userForm).then(res => {
         this.$Message.success('创建成功')
         this.fetchUsers()
@@ -210,13 +209,19 @@ export default {
       })
     },
 
-    hideModal () {
+    hideModal() {
       this.isModalVisible = false
       this.userForm = {}
     },
 
-    updateUser () {
-      let params = _.pick(this.updateUserForm, ['id', 'name', 'password', 'email', 'cellphone'])
+    updateUser() {
+      let params = _.pick(this.updateUserForm, [
+        'id',
+        'name',
+        'password',
+        'email',
+        'cellphone'
+      ])
 
       updateUser(params).then(res => {
         this.$Message.success('创建成功')
@@ -225,17 +230,17 @@ export default {
       })
     },
 
-    hideUpdateModal () {
+    hideUpdateModal() {
       this.isUpdateModalVisible = false
       this.updateUserForm = {}
     },
 
-    showUpdateModal (user) {
+    showUpdateModal(user) {
       this.updateUserForm = Object.assign({}, user)
       this.isUpdateModalVisible = true
     },
 
-    deleteUser (user) {
+    deleteUser(user) {
       this.$Modal.confirm({
         loading: true,
         title: '确认要删除该员工吗？',

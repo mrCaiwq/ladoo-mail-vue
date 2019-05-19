@@ -32,7 +32,7 @@ export default {
     }
   },
   methods: {
-    scale (type) {
+    scale(type) {
       const zoom = this.value + (type === 'down' ? -this.step : this.step)
       if (
         (zoom < this.min && type === 'down') ||

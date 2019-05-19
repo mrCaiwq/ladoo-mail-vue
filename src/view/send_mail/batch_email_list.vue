@@ -11,11 +11,8 @@
       </template>
 
       <template slot-scope="{ row }" slot="action">
-        <router-link :to="{ path: '/send_mail/mails', query: { batch_email_id: row.id }}">
-          查看邮件
-        </router-link>
+        <router-link :to="{ path: '/send_mail/mails', query: { batch_email_id: row.id }}">查看邮件</router-link>
       </template>
-
     </Table>
     <Page
       :current.sync="page"
@@ -25,7 +22,6 @@
       show-elevator
       show-total
     />
-
   </div>
 </template>
 
@@ -35,7 +31,7 @@ import { extractContentFromHtml } from '@/libs/util'
 import { formatTime } from '@/libs/time'
 
 export default {
-  data () {
+  data() {
     return {
       page: 1,
       total: 10,
@@ -97,7 +93,7 @@ export default {
     }
   },
 
-  beforeMount () {
+  beforeMount() {
     this.fetchBatchEmails()
   },
 
@@ -105,7 +101,7 @@ export default {
     extractContentFromHtml,
     formatTime,
 
-    fetchBatchEmails () {
+    fetchBatchEmails() {
       let param = {
         page: this.page,
         per_page: this.perPage
@@ -117,7 +113,7 @@ export default {
       })
     },
 
-    changePage (page) {
+    changePage(page) {
       this.page = page
       this.fetchBatchEmails()
     }
